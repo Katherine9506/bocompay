@@ -5,9 +5,11 @@ import com.bocom.bocompay.BocomClient;
 import com.bocom.bocompay.BocompaySetting;
 import com.spring.bocompay.domain.OrderDetailResponseMessage;
 import com.spring.bocompay.domain.RefundDetailResponseMessage;
+import com.spring.bocompay.domain.TradeRefundResponseMessage;
 import com.spring.bocompay.domain.TransactionMessage;
 import com.spring.bocompay.service.OrderDetailResponseMessageService;
 import com.spring.bocompay.service.RefundDetailResponseMessageService;
+import com.spring.bocompay.service.TradeRefundResponseMessageService;
 import com.spring.bocompay.service.TransactionMessageService;
 import com.spring.bocompay.util.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,8 @@ public class BocompayTradeController {
     private OrderDetailResponseMessageService orderDetailService;
     @Autowired
     private RefundDetailResponseMessageService refundDetailService;
+    @Autowired
+    private TradeRefundResponseMessageService tradeRefundService;
 
     /**
      * @param transaction 订单参数
@@ -51,7 +55,6 @@ public class BocompayTradeController {
         BocomClient client = new BocomClient();
         int ret = client.initialize(xmlConfigPath);
         if (ret != 0) {
-//            out.print("初始化失败,错误信息：" + client.getLastErr());
             System.out.println("初始化失败,错误信息：" + client.getLastErr());
         }
         client = prepareBocomClient(client, transaction);
@@ -221,7 +224,69 @@ public class BocompayTradeController {
         return responseMessage;
     }
 
+    /**
+     * @param
+     * @description: 订单退款
+     * @author: Katherine
+     * @create: 2018/4/26 15:29
+     */
+    @PostMapping(value = "tradeRefund")
+    public ResponseMessage tradeRefund(HttpServletRequest request) {
+        ResponseMessage responseMessage = null;
+        String MerCertID = request.getParameter("MerCertID").trim();
+        String xmlConfigPath = ClassUtils.getDefaultClassLoader().getResource("").getPath() + "static\\ini\\BocompayMerchant.xml";
 
+        BocomClient client = new BocomClient();
+
+        int ret = client.initialize(xmlConfigPath);
+        if (ret != 0) {
+            responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
+        } else {
+            String TranCode = request.getParameter("TranCode");
+            String MerPtcId = request.getParameter("MerPtcId");
+            String TranDate = request.getParameter("TranDate");
+            String TranTime = request.getParameter("TranTime");
+
+            String MerTranSerialNo = request.getParameter("MerTranSerialNo");//商户流水号
+            String MerOrderNo = request.getParameter("MerOrderNo");//平台商户（外部）订单号
+            String RefundAmt = request.getParameter("RefundAmt");//退款金额
+            String RefundCry = request.getParameter("RefundCry");//退款币种
+            String CombineNo = request.getParameter("CombineNo");//并单编号
+            String RefundMemo = request.getParameter("RefundMemo");//退款备注
+
+            client.setHead("TranCode", TranCode);
+            client.setHead("MerPtcId", MerPtcId);
+            client.setHead("TranDate", TranDate);
+            client.setHead("TranTime", TranTime);
+
+            client.setData("MerTranSerialNo", MerTranSerialNo);
+            client.setData("MerOrderNo", MerOrderNo);
+            client.setData("RefundAmt", RefundAmt);
+            client.setData("RefundCry", RefundCry);
+            client.setData("CombineNo", CombineNo);
+            client.setData("RefundMemo", RefundMemo);
+
+            String rst = client.execute(MerCertID, TranCode);
+            TradeRefundResponseMessage tradeRefund = null;
+            if (rst == null) {
+                responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
+            } else {
+                tradeRefund = new TradeRefundResponseMessage(
+                        client.changeNull(client.getHead("RspType")),
+                        client.changeNull(client.getHead("RspCode")),
+                        client.changeNull(client.getHead("RspMsg")),
+                        client.changeNull(client.getHead("RspDate")),
+                        client.changeNull(client.getHead("RspTime"))
+                );
+                if ("E".equalsIgnoreCase(tradeRefund.getRspType())) {
+                    responseMessage = new ResponseMessage(true, tradeRefund.getRspMsg(), 201, tradeRefund);
+                } else {
+                    responseMessage = tradeRefundService.fillTradeRefund(client, tradeRefund);
+                }
+            }
+        }
+        return responseMessage;
+    }
 }
 
 

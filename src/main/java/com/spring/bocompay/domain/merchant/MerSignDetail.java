@@ -63,6 +63,131 @@ public class MerSignDetail {
     private List<FeeInfo> FeeList;//手续费模式列表
 
     private List<MerAccInfo> MerAccList;//帐号信息列表
+
+    public MerSignDetail() {
+    }
+
+    public MerSignDetail(String rspType, String rspCode, String rspMsg, String rspDate, String rspTime) {
+        RspType = rspType;
+        RspCode = rspCode;
+        RspMsg = rspMsg;
+        RspDate = rspDate;
+        RspTime = rspTime;
+    }
+
+    public String getRspType() {
+        return RspType;
+    }
+
+    public void setRspType(String rspType) {
+        RspType = rspType;
+    }
+
+    public String getRspCode() {
+        return RspCode;
+    }
+
+    public void setRspCode(String rspCode) {
+        RspCode = rspCode;
+    }
+
+    public String getRspMsg() {
+        return RspMsg;
+    }
+
+    public void setRspMsg(String rspMsg) {
+        RspMsg = rspMsg;
+    }
+
+    public String getRspDate() {
+        return RspDate;
+    }
+
+    public void setRspDate(String rspDate) {
+        RspDate = rspDate;
+    }
+
+    public String getRspTime() {
+        return RspTime;
+    }
+
+    public void setRspTime(String rspTime) {
+        RspTime = rspTime;
+    }
+
+    public Map<String, String> getMerBaseInfo() {
+        return MerBaseInfo;
+    }
+
+    public void setMerBaseInfo(Map<String, String> merBaseInfo) {
+        MerBaseInfo = merBaseInfo;
+    }
+
+    public Map<String, String> getMerBusInfo() {
+        return MerBusInfo;
+    }
+
+    public void setMerBusInfo(Map<String, String> merBusInfo) {
+        MerBusInfo = merBusInfo;
+    }
+
+    public Map<String, String> getMerPtcInfo() {
+        return MerPtcInfo;
+    }
+
+    public void setMerPtcInfo(Map<String, String> merPtcInfo) {
+        MerPtcInfo = merPtcInfo;
+    }
+
+    public List<ExtMerIdInfo> getExtMerIdList() {
+        return ExtMerIdList;
+    }
+
+    public void setExtMerIdList(List<ExtMerIdInfo> extMerIdList) {
+        ExtMerIdList = extMerIdList;
+    }
+
+    public List<MerParaInfo> getMerParaList() {
+        return MerParaList;
+    }
+
+    public void setMerParaList(List<MerParaInfo> merParaList) {
+        MerParaList = merParaList;
+    }
+
+    public List<FeeInfo> getFeeList() {
+        return FeeList;
+    }
+
+    public void setFeeList(List<FeeInfo> feeList) {
+        FeeList = feeList;
+    }
+
+    public List<MerAccInfo> getMerAccList() {
+        return MerAccList;
+    }
+
+    public void setMerAccList(List<MerAccInfo> merAccList) {
+        MerAccList = merAccList;
+    }
+
+    @Override
+    public String toString() {
+        return "MerSignDetail{" +
+                "RspType='" + RspType + '\'' +
+                ", RspCode='" + RspCode + '\'' +
+                ", RspMsg='" + RspMsg + '\'' +
+                ", RspDate='" + RspDate + '\'' +
+                ", RspTime='" + RspTime + '\'' +
+                ", MerBaseInfo=" + MerBaseInfo +
+                ", MerBusInfo=" + MerBusInfo +
+                ", MerPtcInfo=" + MerPtcInfo +
+                ", ExtMerIdList=" + ExtMerIdList +
+                ", MerParaList=" + MerParaList +
+                ", FeeList=" + FeeList +
+                ", MerAccList=" + MerAccList +
+                '}';
+    }
 }
 
 

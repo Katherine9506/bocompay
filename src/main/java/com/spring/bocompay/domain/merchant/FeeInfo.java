@@ -44,4 +44,115 @@ public class FeeInfo {
         FeeMemo = feeMemo;
     }
 
+    public String getFeeGroupId() {
+        return FeeGroupId;
+    }
+
+    public void setFeeGroupId(String feeGroupId) {
+        FeeGroupId = feeGroupId;
+    }
+
+    public String getFeeGroupName() {
+        return FeeGroupName;
+    }
+
+    public void setFeeGroupName(String feeGroupName) {
+        FeeGroupName = feeGroupName;
+    }
+
+    public String getTranType() {
+        return TranType;
+    }
+
+    public void setTranType(String tranType) {
+        TranType = tranType;
+    }
+
+    public String getPayType() {
+        return PayType;
+    }
+
+    public void setPayType(String payType) {
+        PayType = payType;
+    }
+
+    public String getAccType() {
+        return AccType;
+    }
+
+    public void setAccType(String accType) {
+        AccType = accType;
+    }
+
+    public String getFeeModeId() {
+        return FeeModeId;
+    }
+
+    public void setFeeModeId(String feeModeId) {
+        FeeModeId = feeModeId;
+    }
+
+    public String getFeeModeName() {
+        return FeeModeName;
+    }
+
+    public void setFeeModeName(String feeModeName) {
+        FeeModeName = feeModeName;
+    }
+
+    public String getFeeModeMemo() {
+        return FeeModeMemo;
+    }
+
+    public void setFeeModeMemo(String feeModeMemo) {
+        FeeModeMemo = feeModeMemo;
+    }
+
+    public String getChargeMode() {
+        return ChargeMode;
+    }
+
+    public void setChargeMode(String chargeMode) {
+        ChargeMode = chargeMode;
+    }
+
+    public String getFeeRate() {
+        return FeeRate;
+    }
+
+    public void setFeeRate(String feeRate) {
+        FeeRate = feeRate;
+    }
+
+    public String getFeeCry() {
+        return FeeCry;
+    }
+
+    public void setFeeCry(String feeCry) {
+        FeeCry = feeCry;
+    }
+
+    public String getMaxFeeAmount() {
+        return MaxFeeAmount;
+    }
+
+    public void setMaxFeeAmount(String maxFeeAmount) {
+        MaxFeeAmount = maxFeeAmount;
+    }
+
+    public String getMinFeeAmount() {
+        return MinFeeAmount;
+    }
+
+    public void setMinFeeAmount(String minFeeAmount) {
+        MinFeeAmount = minFeeAmount;
+    }
+
+    public String getFeeMemo() {
+        return FeeMemo;
+    }
+
+    public void setFeeMemo(String feeMemo) {
+        FeeMemo = feeMemo;
+    }
 }

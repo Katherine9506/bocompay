@@ -37,4 +37,10 @@ public class BocompayGetController {
         ModelAndView modelAndView = new ModelAndView("/bocompay/tradeRefund");
         return modelAndView;
     }
+
+    @GetMapping("extraIndex")
+    public ModelAndView extraIndex() {
+        ModelAndView modelAndView = new ModelAndView("/bocompayExtra/extraIndex");
+        return modelAndView;
+    }
 }

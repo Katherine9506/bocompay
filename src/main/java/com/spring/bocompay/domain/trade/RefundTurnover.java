@@ -1,4 +1,4 @@
-package com.spring.bocompay.domain;
+package com.spring.bocompay.domain.trade;
 
 /**
  * @description: 退款流水

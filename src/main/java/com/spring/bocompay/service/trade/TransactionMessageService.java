@@ -1,6 +1,6 @@
-package com.spring.bocompay.service;
+package com.spring.bocompay.service.trade;
 
-import com.spring.bocompay.domain.TransactionMessage;
+import com.spring.bocompay.domain.trade.TransactionMessage;
 import org.springframework.stereotype.Service;
 
 /**

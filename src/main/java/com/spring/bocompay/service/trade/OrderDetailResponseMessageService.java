@@ -1,10 +1,11 @@
-package com.spring.bocompay.service;
+package com.spring.bocompay.service.trade;
 
 import com.bocom.bocompay.BocomClient;
 import com.bocom.bocompay.OpInfo;
 import com.bocom.bocompay.OpList;
-import com.spring.bocompay.domain.OrderDetailResponseMessage;
-import com.spring.bocompay.domain.TradeTurnover;
+import com.spring.bocompay.domain.trade.OrderDetailResponseMessage;
+import com.spring.bocompay.domain.trade.TradeTurnover;
+import com.spring.bocompay.service.BaseService;
 import com.spring.bocompay.util.ResponseMessage;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.spring.bocompay.domain;
+package com.spring.bocompay.domain.trade;
 
 /**
  * Created by Elena@qq.com on 2018/4/25

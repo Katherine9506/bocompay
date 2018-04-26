@@ -1,11 +1,11 @@
-package com.spring.bocompay.domain;
+package com.spring.bocompay.domain.trade;
 
 /**
- * @description: 订单交付 响应报文
+ * @description: 订单退款 响应报文
  * @author: Katherine
- * @create: 2018/4/26 16:02
+ * @create: 2018/4/26 15:28
  */
-public class TradeConfirmResponseMessage {
+public class TradeRefundResponseMessage {
     //head
     private String RspType;//响应类型
     private String RspCode;//交易返回码
@@ -14,17 +14,19 @@ public class TradeConfirmResponseMessage {
     private String RspTime;//响应时间
     //body
     private String TranRspCode;//交易处理码
+    private String TranRspMsg;//交易处理描述
     private String TranStt;//交易状态
     private String MerOrderNo;//一级商户（外部）订单号
-    private String ConfirmOrder;//交付单据号
-    private String ConfirmAmt;//交付金额
-    private String ConfirmCry;//交付币种
+    private String RefundOrderNo;//退款单据号
+    private String RefundAmt;//退款金额
+    private String RefundCry;//退款币种
     private String MerTranSerialNo;//商户流水号
+    private String ChannelType;//支付类型
 
-    public TradeConfirmResponseMessage() {
+    public TradeRefundResponseMessage() {
     }
 
-    public TradeConfirmResponseMessage(String rspType, String rspCode, String rspMsg, String rspDate, String rspTime) {
+    public TradeRefundResponseMessage(String rspType, String rspCode, String rspMsg, String rspDate, String rspTime) {
         RspType = rspType;
         RspCode = rspCode;
         RspMsg = rspMsg;
@@ -80,6 +82,14 @@ public class TradeConfirmResponseMessage {
         TranRspCode = tranRspCode;
     }
 
+    public String getTranRspMsg() {
+        return TranRspMsg;
+    }
+
+    public void setTranRspMsg(String tranRspMsg) {
+        TranRspMsg = tranRspMsg;
+    }
+
     public String getTranStt() {
         return TranStt;
     }
@@ -96,28 +106,28 @@ public class TradeConfirmResponseMessage {
         MerOrderNo = merOrderNo;
     }
 
-    public String getConfirmOrder() {
-        return ConfirmOrder;
+    public String getRefundOrderNo() {
+        return RefundOrderNo;
     }
 
-    public void setConfirmOrder(String confirmOrder) {
-        ConfirmOrder = confirmOrder;
+    public void setRefundOrderNo(String refundOrderNo) {
+        RefundOrderNo = refundOrderNo;
     }
 
-    public String getConfirmAmt() {
-        return ConfirmAmt;
+    public String getRefundAmt() {
+        return RefundAmt;
     }
 
-    public void setConfirmAmt(String confirmAmt) {
-        ConfirmAmt = confirmAmt;
+    public void setRefundAmt(String refundAmt) {
+        RefundAmt = refundAmt;
     }
 
-    public String getConfirmCry() {
-        return ConfirmCry;
+    public String getRefundCry() {
+        return RefundCry;
     }
 
-    public void setConfirmCry(String confirmCry) {
-        ConfirmCry = confirmCry;
+    public void setRefundCry(String refundCry) {
+        RefundCry = refundCry;
     }
 
     public String getMerTranSerialNo() {
@@ -128,21 +138,47 @@ public class TradeConfirmResponseMessage {
         MerTranSerialNo = merTranSerialNo;
     }
 
+    public String getChannelType() {
+        return ChannelType;
+    }
+
+    public void setChannelType(String channelType) {
+        ChannelType = channelType;
+    }
+
     @Override
     public String toString() {
-        return "TradeConfirmResponseMessage{" +
+        return "TradeRefundResponseMessage{" +
                 "RspType='" + RspType + '\'' +
                 ", RspCode='" + RspCode + '\'' +
                 ", RspMsg='" + RspMsg + '\'' +
                 ", RspDate='" + RspDate + '\'' +
                 ", RspTime='" + RspTime + '\'' +
                 ", TranRspCode='" + TranRspCode + '\'' +
+                ", TranRspMsg='" + TranRspMsg + '\'' +
                 ", TranStt='" + TranStt + '\'' +
                 ", MerOrderNo='" + MerOrderNo + '\'' +
-                ", ConfirmOrder='" + ConfirmOrder + '\'' +
-                ", ConfirmAmt='" + ConfirmAmt + '\'' +
-                ", ConfirmCry='" + ConfirmCry + '\'' +
+                ", RefundOrderNo='" + RefundOrderNo + '\'' +
+                ", RefundAmt='" + RefundAmt + '\'' +
+                ", RefundCry='" + RefundCry + '\'' +
                 ", MerTranSerialNo='" + MerTranSerialNo + '\'' +
+                ", ChannelType='" + ChannelType + '\'' +
                 '}';
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

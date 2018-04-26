@@ -1,4 +1,4 @@
-package com.spring.bocompay.domain;
+package com.spring.bocompay.domain.trade;
 
 import com.bocom.bocompay.BocomDataMap;
 import org.springframework.beans.factory.annotation.Value;

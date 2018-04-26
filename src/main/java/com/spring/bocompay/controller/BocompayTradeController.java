@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
  * @create: 2018/4/25 17:37
  */
 @RestController
-@RequestMapping("bocompay")
+@RequestMapping("bocompay/trade")
 public class BocompayTradeController {
 
     @Autowired

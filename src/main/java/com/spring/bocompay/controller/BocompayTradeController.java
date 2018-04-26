@@ -2,15 +2,10 @@ package com.spring.bocompay.controller;
 
 
 import com.bocom.bocompay.BocomClient;
+import com.bocom.bocompay.BocomDataMap;
 import com.bocom.bocompay.BocompaySetting;
-import com.spring.bocompay.domain.OrderDetailResponseMessage;
-import com.spring.bocompay.domain.RefundDetailResponseMessage;
-import com.spring.bocompay.domain.TradeRefundResponseMessage;
-import com.spring.bocompay.domain.TransactionMessage;
-import com.spring.bocompay.service.OrderDetailResponseMessageService;
-import com.spring.bocompay.service.RefundDetailResponseMessageService;
-import com.spring.bocompay.service.TradeRefundResponseMessageService;
-import com.spring.bocompay.service.TransactionMessageService;
+import com.spring.bocompay.domain.*;
+import com.spring.bocompay.service.*;
 import com.spring.bocompay.util.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ClassUtils;
@@ -39,6 +34,8 @@ public class BocompayTradeController {
     private RefundDetailResponseMessageService refundDetailService;
     @Autowired
     private TradeRefundResponseMessageService tradeRefundService;
+    @Autowired
+    private TradeConfirmResponseMessageService tradeConfirmService;
 
     /**
      * @param transaction 订单参数
@@ -226,7 +223,7 @@ public class BocompayTradeController {
 
     /**
      * @param
-     * @description: 订单退款
+     * @description: 订单退款< BPAYPY4107>
      * @author: Katherine
      * @create: 2018/4/26 15:29
      */
@@ -260,11 +257,13 @@ public class BocompayTradeController {
             client.setHead("TranTime", TranTime);
 
             client.setData("MerTranSerialNo", MerTranSerialNo);
-            client.setData("MerOrderNo", MerOrderNo);
-            client.setData("RefundAmt", RefundAmt);
-            client.setData("RefundCry", RefundCry);
-            client.setData("CombineNo", CombineNo);
-            client.setData("RefundMemo", RefundMemo);
+            BocomDataMap busiInfo = new BocomDataMap();//业务信息
+            busiInfo.setData("MerOrderNo", MerOrderNo);
+            busiInfo.setData("RefundAmt", RefundAmt);
+            busiInfo.setData("RefundCry", RefundCry);
+            busiInfo.setData("CombineNo", CombineNo);
+            busiInfo.setData("RefundMemo", RefundMemo);
+            client.setData("BusiInfo", busiInfo.toString());
 
             String rst = client.execute(MerCertID, TranCode);
             TradeRefundResponseMessage tradeRefund = null;
@@ -282,6 +281,79 @@ public class BocompayTradeController {
                     responseMessage = new ResponseMessage(true, tradeRefund.getRspMsg(), 201, tradeRefund);
                 } else {
                     responseMessage = tradeRefundService.fillTradeRefund(client, tradeRefund);
+                }
+            }
+        }
+        return responseMessage;
+    }
+
+    /**
+     * @param
+     * @description: 订单交付< BPAYPY4106>
+     * @author: Katherine
+     * @create: 2018/4/26 15:52
+     */
+    @PostMapping(value = "tradePay")
+    public ResponseMessage tradePay(HttpServletRequest request) {
+        ResponseMessage responseMessage = null;
+        String MerCertID = request.getParameter("MerCertID").trim();
+        String xmlConfigPath = ClassUtils.getDefaultClassLoader().getResource("").getPath() + "static\\ini\\BocompayMerchant.xml";
+
+        BocomClient client = new BocomClient();
+
+        int ret = client.initialize(xmlConfigPath);
+        if (ret != 0) {
+            responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
+        } else {
+            String TranCode = request.getParameter("TranCode");
+            String MerPtcId = request.getParameter("MerPtcId");
+            String TranDate = request.getParameter("TranDate");
+            String TranTime = request.getParameter("TranTime");
+
+            String MerTranSerialNo = request.getParameter("MerTranSerialNo");//商户流水号
+            String SubMerPtcId = request.getParameter("SubMerPtcId");//二级商户协议号
+            String MerOrderNo = request.getParameter("MerOrderNo");//一级商户（外部）订单号
+            String ConfirmType = request.getParameter("ConfirmType");//交付类型
+            String ConfirmAmt = request.getParameter("ConfirmAmt");//交付金额
+            String ConfirmCry = request.getParameter("ConfirmCry");//交付币种
+            String MerProfitAmt = request.getParameter("MerProfitAmt");//一级商户分润金额
+            String MerProfitCry = request.getParameter("MerProfitCry");//一级商户分润币种
+            String ConfirmMemo = request.getParameter("ConfirmMemo");//交付备注
+
+
+            client.setHead("TranCode", TranCode);
+            client.setHead("MerPtcId", MerPtcId);
+            client.setHead("TranDate", TranDate);
+            client.setHead("TranTime", TranTime);
+
+            client.setData("MerTranSerialNo", MerTranSerialNo);
+            client.setData("SubMerPtcId", SubMerPtcId);
+            BocomDataMap busiInfo = new BocomDataMap();//业务信息
+            busiInfo.setData("MerOrderNo", MerOrderNo);
+            busiInfo.setData("ConfirmType", ConfirmType);
+            busiInfo.setData("ConfirmAmt", ConfirmAmt);
+            busiInfo.setData("ConfirmCry", ConfirmCry);
+            busiInfo.setData("MerProfitAmt", MerProfitAmt);
+            busiInfo.setData("MerProfitCry", MerProfitCry);
+            busiInfo.setData("ConfirmMemo", ConfirmMemo);
+            client.setData("BusiInfo", busiInfo.toString());
+
+            String rst = client.execute(MerCertID, TranCode);
+            TradeConfirmResponseMessage tradeConfim = null;
+            if (rst == null) {
+                responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
+            } else {
+                tradeConfim = new TradeConfirmResponseMessage(
+                        client.changeNull(client.getHead("RspType")),
+                        client.changeNull(client.getHead("RspCode")),
+                        client.changeNull(client.getHead("RspMsg")),
+                        client.changeNull(client.getHead("RspDate")),
+                        client.changeNull(client.getHead("RspTime"))
+                );
+                if ("E".equalsIgnoreCase(tradeConfim.getRspType())) {
+                    responseMessage = new ResponseMessage(true, tradeConfim.getRspMsg(), 201, tradeConfim);
+                } else {
+                    responseMessage = tradeConfirmService.fillTradeConfirm(client, tradeConfim);
                 }
             }
         }

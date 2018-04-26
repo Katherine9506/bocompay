@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BOCOM>
+    <LogPath>F:\\my_work\\bocompay\\logs</LogPath>
+    <Setting>T</Setting>    <!-- T为测试环境，P为生产环境 -->
+    <Certs>
+        <CertInf>
+            <MerchantCertFile>301310063009501.pfx</MerchantCertFile>    <!--测试环境商户证书文件,商户上线时该证书换为商户生产证书-->
+            <MerchantCertPassword>12345678</MerchantCertPassword>        <!--测试环境商户证书私钥加密密码,商户上线时该密码换为商户生产证书密码-->
+        </CertInf>
+        <!--多商户支持-->
+        <CertInf>
+            <MerchantCertFile>301310063009502.pfx</MerchantCertFile>    <!--测试环境商户证书文件,商户上线时该证书换为商户生产证书-->
+            <MerchantCertPassword>12345678</MerchantCertPassword>        <!--测试环境商户证书私钥加密密码,商户上线时该密码换为商户生产证书密码-->
+        </CertInf>
+        <CertInf>
+            <MerchantCertFile>301140880629503.pfx</MerchantCertFile>    <!--测试环境商户证书文件,商户上线时该证书换为商户生产证书-->
+            <MerchantCertPassword>12345678</MerchantCertPassword>        <!--测试环境商户证书私钥加密密码,商户上线时该密码换为商户生产证书密码-->
+        </CertInf>
+    </Certs>
+</BOCOM>

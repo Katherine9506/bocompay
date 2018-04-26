@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta http-equiv = "Content-Type" content = "text/html; charset=UTF-8">
+        <title>一级商户订单通知维护(BPAYPY4020)</title>
+<script language = "javascript">
+	function createOrderInfo(){
+		var tmpDate = new Date();
+		var day = tmpDate.getDate();
+		var month= tmpDate.getMonth() + 1 ;
+		var year= tmpDate.getFullYear();
+    	var hours = tmpDate.getHours();
+    	var minutes = tmpDate.getMinutes();
+    	var seconds = tmpDate.getSeconds();
+    	
+    	month = ((month < 10) ? "0" : "") + month;
+    	day = ((day < 10) ? "0" : "") + day;
+    	hours = ((hours < 10) ? "0" : "") + hours;
+    	minutes = ((minutes < 10) ? "0" : "") + minutes;
+    	seconds = ((seconds < 10) ? "0" : "") + seconds;
+    	
+    	document.all.TranDate.value = year + month + day;
+    	document.all.TranTime.value = hours + minutes + seconds;
+		document.all.MerTranSerialNo.value = "Mer"+year + month + day+hours + minutes + seconds;
+	}
+</script>
+    </head>
+
+    <body bgcolor = "#FFFFFF" text = "#000000">
+        <form name = "form1" method = "post" action = "merOrderNotifyMaintain.jsp">
+            <p>
+                <input type = "hidden" name = "merCert" value = ""> 一级商户订单通知维护(BPAYPY4020)
+            </p>
+			
+			<hr/>
+            <p>
+            	<font color="blue">商户证书ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>
+            	<input type = "text" style="border-color:blue" name = "MerCertID" value = "301140880629503" >
+			</p>
+			<hr/>
+			
+            <table width = "75%" border = "0" cellpadding = "0" cellspacing = "0">
+                <tr>
+                    <td width = "23%">
+                        交易码
+                    </td>
+
+                    <td width = "77%">
+                        <input type = "text" name = "TranCode" value = "BPAYPY4020">
+                        <input type = "submit" id = "Submit" value = "提交" name = "submit">
+                    </td>
+                </tr>
+              <tr>
+                    <td width = "23%">
+                        一级商户协议号*
+                    </td>
+
+                    <td width = "77%">
+                        <input type = "text" name = "MerPtcId" value = "1BPAY1404151028"> 
+                    </td>
+                </tr>
+
+                <tr>
+                    <td width = "23%">
+                        请求日期*
+                    </td>
+
+                    <td width = "77%">
+                        <input type = "text" name = "TranDate" value = ""> yyyyMMdd
+                        <input type = "button" name = "createOrderId" value = "生成时间" onClick = "javascript:createOrderInfo();" >
+                        
+                    </td>
+                </tr>
+
+                <tr>
+                    <td width = "23%">
+                        请求时间*
+                    </td>
+
+                    <td width = "77%">
+                        <input type = "text" name = "TranTime" value = ""> HHmmss
+                    </td>
+                </tr>
+                <tr>
+                    <td width = "23%">
+                     
+                    </td><td>以下两个参数不能同时为空</td>
+				</tr>
+                <tr>
+                    <td>前台通知地址</td>
+                    <td width = "77%">
+                        <input style="width: 500px" type = "text" name = "ReturnURL" value = "http://test:7070/BPAYMer2/bpayMer/merchant_result.jsp"> 
+                    </td>
+                </tr>
+				<tr>
+                    <td>后台通知地址</td>
+                    <td width = "77%">
+                        <input style="width: 500px" type = "text" name = "NotifyURL" value = "http://www.test.com/cart/notice.php"> 
+                    </td>
+                </tr>
+                <!-- 
+                <tr>
+                    <td width = "23%">
+                     
+                    </td><td>一键支付付款账户签约通知地址维护</td>
+				</tr>
+                <tr>
+                    <td>一键支付账户签约前台通知地址</td>
+                    <td width = "77%">
+                        <input style="width: 500px" type = "text" name = "AgreedReturnURL" value = "http://test:7070/BPAYMer2/bpayMer/merchant_result.jsp"> 
+                    </td>
+                </tr>
+				<tr>
+                    <td>一键支付账户签约后台通知地址</td>
+                    <td width = "77%">
+                        <input style="width: 500px" type = "text" name = "AgreedNotifyURL" value = "http://www.test.com/cart/notice.php"> 
+                    </td>
+                </tr>
+                 -->
+			</table>
+
+            <p>
+                &nbsp;
+            </p>
+        </form>
+    </body>
+</html>
+				

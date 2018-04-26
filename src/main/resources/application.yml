@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    active: dev
+
+#测试商户证书ID
+MerCertID: 301140880629503
+#测试通讯地址
+BpayOrderPayURLTest: https://pbanktest.95559.com.cn/netpay/mapiTRL/pay.jsp

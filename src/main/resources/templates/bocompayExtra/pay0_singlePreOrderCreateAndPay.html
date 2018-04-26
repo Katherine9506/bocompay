@@ -1,0 +1,276 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>单笔预订单创建(BPAYPY4151)</title>
+    <script language="javascript">
+        function createOrderInfo() {
+            var tmpDate = new Date();
+            var day = tmpDate.getDate();
+            var month = tmpDate.getMonth() + 1;
+            var year = tmpDate.getFullYear();
+            var hours = tmpDate.getHours();
+            var minutes = tmpDate.getMinutes();
+            var seconds = tmpDate.getSeconds();
+
+            month = ((month < 10) ? "0" : "") + month;
+            day = ((day < 10) ? "0" : "") + day;
+            hours = ((hours < 10) ? "0" : "") + hours;
+            minutes = ((minutes < 10) ? "0" : "") + minutes;
+            seconds = ((seconds < 10) ? "0" : "") + seconds;
+
+            document.all.TranDate.value = year + month + day;
+            document.all.TranTime.value = hours + minutes + seconds;
+            document.all.MerOrderNo.value = "TestPr" + year + month + day + hours + minutes + seconds;
+            document.all.MerTranSerialNo.value = "Mer" + year + month + day + hours + minutes + seconds;
+        }
+    </script>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+<form name="form1" method="post" action="pay0_singlePreOrderCreateAndPay.jsp">
+    <p>
+        <input type="hidden" name="merCert" value=""> 单笔预订单创建(BPAYPY4151)
+    </p>
+
+    <hr/>
+    <p>
+        <font color="blue">商户证书ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>
+        <input type="text" style="border-color:blue" name="MerCertID" value="301140880629503">
+    </p>
+    <hr/>
+
+    <table width="75%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td width="23%">
+                交易码
+            </td>
+
+            <td width="77%">
+                <input type="text" name="TranCode" value="BPAYPY4151">
+                <input type="submit" id="Submit" value="提交" name="submit">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                一级商户协议号*
+            </td>
+
+            <td width="77%">
+                <input type="text" name="MerPtcId" value="1BPAY1403040882">
+            </td>
+        </tr>
+
+        <tr>
+            <td width="23%">
+                请求日期*
+            </td>
+
+            <td width="77%">
+                <input type="text" name="TranDate" value=""> yyyyMMdd
+                <input type="button" name="createOrderId" value="生成时间" onClick="javascript:createOrderInfo();">
+
+            </td>
+        </tr>
+
+        <tr>
+            <td width="23%">
+                请求时间*
+            </td>
+
+            <td width="77%">
+                <input type="text" name="TranTime" value=""> HHmmss
+            </td>
+        </tr>
+
+        <tr>
+            <td>商户交易流水号*</td>
+            <td width="77%">
+                <input type="text" name="MerTranSerialNo" value="">
+            </td>
+        </tr>
+
+        <tr>
+            <td width="23%">
+                协议信息:
+            </td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>二级商户签约协议号*</td>
+            <td width="77%">
+                <input type="text" name="SubMerPtcId" value="2BPAY1403042556">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                业务信息:
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>平台商户（外部）订单号*</td>
+            <td width="77%">
+                <input type="text" name="MerOrderNo" value="">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                会员信息:
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>买家会员编号</td>
+            <td width="77%">
+                <input type="text" name="BuyerId" value="bId01">
+            </td>
+        </tr>
+        <tr>
+            <td>买家昵称</td>
+            <td width="77%">
+                <input type="text" name="BuyerName" value="bName01">
+            </td>
+        </tr>
+        <tr>
+            <td>买家卡号</td>
+            <td width="77%">
+                <input type="text" name="CardNo" value="6225111122223333011">
+            </td>
+        </tr>
+        <tr>
+            <td>卖家会员编号</td>
+            <td width="77%">
+                <input type="text" name="SellerId" value="sId01">
+            </td>
+        </tr>
+        <tr>
+            <td>卖家昵称</td>
+            <td width="77%">
+                <input type="text" name="SellerName" value="sName01">
+            </td>
+        </tr>
+
+        <tr>
+            <td width="23%">
+                商品信息:
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>商品名称</td>
+            <td width="77%">
+                <input type="text" name="GoodsName" value="Cake01">
+            </td>
+        </tr>
+        <tr>
+            <td>商品简称</td>
+            <td width="77%">
+                <input type="text" name="GoodsTxt" value="C01">
+            </td>
+        </tr>
+        <tr>
+            <td>商品详情</td>
+            <td width="77%">
+                <input type="text" name="GoodsDesc" value="Genaral">
+            </td>
+        </tr>
+
+        <tr>
+            <td width="23%">
+                交易信息:
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>交易方式*<br/>
+                &nbsp;&nbsp;E(escrow)担保交易<br/>
+                &nbsp;&nbsp;D(Direct)普通支付(单层协议)<br/>
+                &nbsp;&nbsp;F(Fastpay)二级清分
+
+            </td>
+            <td width="77%" valign="top">
+                <input type="text" name="TranModeId" value="E">
+            </td>
+        </tr>
+        <tr>
+            <td>交易金额(须两位小数)*</td>
+            <td width="77%">
+                <input type="text" name="TranAmt" value="1.00">
+            </td>
+        </tr>
+        <tr>
+            <td>交易币种*</td>
+            <td width="77%">
+                <input type="text" name="TranCry" value="CNY">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                通道信息:
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>通道接口编号
+            </td>
+            <td width="77%" valign="top">
+                <input type="text" name="ChannelApi" value="0000003090">
+            </td>
+        </tr>
+        <tr>
+            <td>通道所属机构</td>
+            <td width="77%">
+                <input type="text" name="ChannelInst" value="netpay">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                备注信息:
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>买家备注</td>
+            <td width="77%" valign="top">
+                <input type="text" name="BuyerMemo" value="BuyerMemo">
+            </td>
+        </tr>
+        <tr>
+            <td>卖家备注</td>
+            <td width="77%">
+                <input type="text" name="SellerMemo" value="SellerMemo">
+            </td>
+        </tr>
+        <tr>
+            <td>平台商备注</td>
+            <td width="77%" valign="top">
+                <input type="text" name="PlatMemo" value="PlatMemo">
+            </td>
+        </tr>
+        <tr>
+            <td>付款备注</td>
+            <td width="77%" valign="top">
+                <input type="text" name="PayMemo" value="PayMemo">
+            </td>
+        </tr>
+        <tr>
+            <td>安全域</td>
+            <td width="77%">
+                <input type="text" name="SafeReserved" value="">
+            </td>
+        </tr>
+        <tr>
+            <td>订单有效期</td>
+            <td width="77%">
+                <input type="text" name="ValidPeriod" value="">
+            </td>
+        </tr>
+    </table>
+
+    <p>
+        &nbsp;
+    </p>
+</form>
+</body>
+</html>

@@ -1,0 +1,560 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>合并订单创建并付款</title>
+
+    <script language="javascript">
+        //默认合并订单数量为2
+        var initialCount = 2;
+
+        function createOrderInfo() {
+            var tmpDate = new Date();
+            var day = tmpDate.getDate();
+            var month = tmpDate.getMonth() + 1;
+            var year = tmpDate.getFullYear();
+            var hours = tmpDate.getHours();
+            var minutes = tmpDate.getMinutes();
+            var seconds = tmpDate.getSeconds();
+
+            month = ((month < 10) ? "0" : "") + month;
+            day = ((day < 10) ? "0" : "") + day;
+            hours = ((hours < 10) ? "0" : "") + hours;
+            minutes = ((minutes < 10) ? "0" : "") + minutes;
+            seconds = ((seconds < 10) ? "0" : "") + seconds;
+
+            document.all.TranDate.value = year + month + day;
+            document.all.TranTime.value = hours + minutes + seconds;
+            document.all.MerTranSerialNo.value = "Mer" + year + month + day + hours + minutes + seconds;
+            var valueDn = year + month + day + hours + minutes + seconds;
+            for (var i = 1; i <= initialCount; i++) {
+                if (i == 1) {
+                    document.getElementById("inMerOrderNo").value = "Tes001" + valueDn;
+                    continue;
+                }
+                if (i > 1 && i < 10) {
+                    document.getElementById("inMerOrderNo" + i).value = "Tes00" + i + valueDn;
+                    continue;
+                }
+                if (i >= 10 && i < 100) {
+                    document.getElementById("inMerOrderNo" + i).value = "Tes0" + i + valueDn;
+                    continue;
+                }
+                if (i == 100) {
+                    document.all.MerOrderNo100.value = "Tes100" + valueDn;
+                    continue;
+                }
+                if (i == 1000) {
+                    //其实在change方法中设置了只能最多执行100笔，不然浏览器会卡掉
+                    document.all.MerOrderNo1000.value = "T000" + valueDn;
+                    continue;
+                }
+            }
+        }
+
+        function changeOrderInfos() {
+            var count = Math.floor(document.getElementById("MergingCount").value);
+            if (count > 0 && count <= 100) {
+                if (count == initialCount) {
+                    //下面这行目的是为了用户开始输入了小数的缘故
+                    document.getElementById("MergingCount").value = count;
+                }
+                else if (count < initialCount) {
+                    for (var i = count + 1; i <= initialCount; i++) {
+                        deleteTr("TrOrderInfo" + i);
+                        deleteTr("TrPtcInfo" + i);
+                        deleteTr("TrSubMerPtcId" + i);
+                        deleteTr("TrBusiInfo" + i);
+                        deleteTr("TrMerOrderNo" + i);
+
+                        deleteTr("TrUserInfo" + i);
+                        deleteTr("TrBuyerId" + i);
+                        deleteTr("TrBuyerName" + i);
+                        deleteTr("TrSellerId" + i);
+
+                        deleteTr("TrSellerName" + i);
+                        deleteTr("TrGoodsInfo" + i);
+                        deleteTr("TrGoodsName" + i);
+                        deleteTr("TrGoodsTxt" + i);
+                        deleteTr("TrGoodsDesc" + i);
+
+                        deleteTr("TrTranInfo" + i);
+                        deleteTr("TrTranModeId" + i);
+                        deleteTr("TrTranAmt" + i);
+                        deleteTr("TrTranCry" + i);
+
+                        deleteTr("TrMemoInfo" + i);
+                        deleteTr("TrBuyerMemo" + i);
+                        deleteTr("TrSellerMemo" + i);
+                        deleteTr("TrPlatMemo" + i);
+                    }
+                    //下面这行目的是为了用户开始输入了小数的缘故
+                    document.getElementById("MergingCount").value = count;
+                    initialCount = count;
+                }
+                else if (count > initialCount) {
+                    for (var i = initialCount + 1; i <= count; i++) {
+                        addTr("TrOrderInfo" + i, "#####订单" + i + "#####", "", "", "");
+                        addTr("TrPtcInfo" + i, "协议信息:", "", "", "");
+                        addTr("TrSubMerPtcId" + i, "二级商户签约协议号*", "inSubMerPtcId" + i, "SubMerPtcId" + i, "2BPAY1403042556");
+                        addTr("TrBusiInfo" + i, "业务信息:", "", "", "");
+                        addTr("TrMerOrderNo" + i, "平台商户（外部）订单号*", "inMerOrderNo" + i, "MerOrderNo" + i, "");
+
+                        addTr("TrUserInfo" + i, "会员信息:", "", "", "");
+                        addTr("TrBuyerId" + i, "买家会员编号", "inBuyerId" + i, "BuyerId" + i, "bId01");
+                        addTr("TrBuyerName" + i, "买家昵称", "inBuyerName" + i, "BuyerName" + i, "bName01");
+                        addTr("TrSellerId" + i, "卖家会员编号", "inSellerId" + i, "SellerId" + i, "sId01");
+
+                        addTr("TrSellerName" + i, "卖家昵称", "inSellerName" + i, "SellerName" + i, "sName01");
+                        addTr("TrGoodsInfo" + i, "商品信息:", "", "", "");
+                        addTr("TrGoodsName" + i, "商品名称", "inGoodsName" + i, "GoodsName" + i, "Cake01");
+                        addTr("TrGoodsTxt" + i, "商品简称", "inGoodsTxt" + i, "GoodsTxt" + i, "C01");
+                        addTr("TrGoodsDesc" + i, "商品详情", "inGoodsDesc" + i, "GoodsDesc" + i, "Genaral01");
+
+                        addTr("TrTranInfo" + i, "交易信息:", "", "", "");
+                        addTr("TrTranModeId" + i, "交易类型*<br/>&nbsp;&nbsp;E(escrow)担保交易<br/>&nbsp;&nbsp;D(Direct)直接到账(单层协议)<br/>&nbsp;&nbsp;F(Fastpay)即时到帐<br/>&nbsp;&nbsp;U(Current)实时到帐", "inTranModeId" + i, "TranModeId" + i, "E");
+
+
+                        addTr("TrTranAmt" + i, "交易金额*", "inTranAmt" + i, "TranAmt" + i, "1.00");
+                        addTr("TrTranCry" + i, "交易币种*", "inTranCry" + i, "TranCry" + i, "CNY");
+
+                        addTr("TrMemoInfo" + i, "备注信息:", "", "", "");
+                        addTr("TrBuyerMemo" + i, "买家备注", "inGoodsName" + i, "GoodsName" + i, "Cake01");
+                        addTr("TrSellerMemo" + i, "卖家备注", "inGoodsTxt" + i, "GoodsTxt" + i, "C01");
+                        addTr("TrPlatMemo" + i, "平台商备注", "inGoodsDesc" + i, "GoodsDesc" + i, "Genaral01");
+                    }
+                    //下面这行目的是为了用户开始输入了小数的缘故
+                    document.getElementById("MergingCount").value = count;
+                    initialCount = count;
+                }
+            }
+            else {
+                alert("请输入1至100的整数");
+            }
+            //下面这行的目的是通知form提交给的jsp页面到底需要合并几张订单
+            document.all.HiddenRealCount.value = initialCount;
+            //有可能有人点了输入框之后，并没有点击改变订单，所以，真正有效的订单数量还是由程序来控制才合理
+            document.all.TotalCount.value = initialCount;
+        }
+
+        function addTr(trId, desc, inputId, textName, textValue) {
+            var table = document.getElementById("table");
+            var tr = table.insertRow();
+            tr.id = trId;
+            var td1 = tr.insertCell();
+            td1.innerHTML = desc;
+            var td2 = tr.insertCell();
+            td2.width = "77%";
+            if (inputId != "") {
+                td2.innerHTML = '<input id = ' + inputId + ' type = "text" name = ' + textName + ' value = ' + textValue + ' >';
+            }
+        }
+
+        function deleteTr(trId) {
+            var tr = document.getElementById(trId);
+            while (tr.hasChildNodes()) {
+                tr.removeChild(tr.firstChild);
+            }
+            tr.removeNode();
+        }
+    </script>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+<form name="form1" method="post" action="pay1_mergeOrderCreateAndPay.jsp">
+    <p>
+        <input type="hidden" name="merCert" value=""> 合并订单创建并付款
+    </p>
+    <p>
+        <!-- 下面这行中，value = "2"，其默认值为2，原因是，有可能用户看到页面后，根本不需要改变合并订单的数量，则默认通知jsp页面来处理2张订单的合并 -->
+        <input type="hidden" name="HiddenRealCount" value="2">
+    </p>
+    <hr/>
+
+    <p>
+        <font color="blue">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            商户证书ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>
+        <input type="text" style="border-color:blue" name="MerCertID" value="301140880629503">
+    </p>
+
+    <p>
+        请输入要合并的订单数量&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input id="MergingCount" type="text" name="MergingCount" value="2">
+        <input type="button" name="bnChangeOrderInfos" value="Change" onClick="javascript:changeOrderInfos();">
+        <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(默认为2笔):
+    </p>
+    <hr/>
+    <table id="table" width="75%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td width="23%">
+                交易码
+            </td>
+            <td width="77%">
+                <input type="text" name="TranCode" value="BPAYPY4102">
+                <input type="submit" id="Submit" value="提交" name="submit">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                一级商户协议号*
+            </td>
+
+            <td width="77%">
+                <input type="text" name="MerPtcId" value="1BPAY1403040882">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                请求日期*
+            </td>
+            <td width="77%">
+                <input type="text" name="TranDate" value=""> yyyyMMdd
+                <input type="button" name="createOrderId" value="生成时间与商户(外部)订单号"
+                       onClick="javascript:createOrderInfo();">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                请求时间*
+            </td>
+
+            <td width="77%">
+                <input type="text" name="TranTime" value=""> HHmmss
+            </td>
+        </tr>
+        <tr>
+            <td>总订单数*</td>
+            <td width="77%">
+                <input readonly type="text" name="TotalCount" value="2" style="background-color:gray">
+            </td>
+        </tr>
+        <tr>
+            <td>通道接口编号</td>
+            <td width="77%">
+                <input type="text" name="ChannelApi" value="3010001010">
+            </td>
+        </tr>
+        <tr>
+            <td>通道所属机构<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;netpay：银联电子支付<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;99bill：快钱<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;chinapay：银联电子支付<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;cfca：中国金融认证中心<br/>
+            </td>
+            <td width="77%" valign="top">
+                <input type="text" name="ChannelInst" value="netpay">
+            </td>
+        </tr>
+        <tr>
+            <td>商户交易流水号*</td>
+            <td width="77%">
+                <input type="text" name="MerTranSerialNo" value="">
+            </td>
+        </tr>
+
+        <tr>
+            <td>付款备注</td>
+            <td width="77%">
+                <input type="text" name="PayMemo" value="PayMemo">
+            </td>
+        </tr>
+        <tr>
+            <td>安全域</td>
+            <td width="77%">
+                <input type="text" name="SafeReserved" value="">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                ***订单信息列表***
+            </td>
+            <td></td>
+        </tr>
+        <tr id="TrOrderInfo">
+            <td width="23%">
+                #####订单1#####
+            </td>
+            <td></td>
+        </tr>
+        <tr id="TrPtcInfo">
+            <td width="23%">
+                协议信息:
+            </td>
+            <td></td>
+        </tr>
+        <tr id="TrSubMerPtcId">
+            <td>二级商户签约协议号*</td>
+            <td width="77%">
+                <input id="inSubMerPtcId" type="text" name="SubMerPtcId" value="2BPAY1403042556">
+            </td>
+        </tr>
+        <tr id="TrBusiInfo">
+            <td width="23%">
+                业务信息:
+            </td>
+            <td></td>
+        </tr>
+        <tr id="TrMerOrderNo">
+            <td>平台商户（外部）订单号*</td>
+            <td width="77%">
+                <input id="inMerOrderNo" type="text" name="MerOrderNo" value="">
+            </td>
+        </tr>
+        <tr id="TrUserInfo">
+            <td width="23%">
+                会员信息:
+            </td>
+            <td></td>
+        </tr>
+        <tr id="TrBuyerId">
+            <td>买家会员编号</td>
+            <td width="77%">
+                <input id="inBuyerId" type="text" name="BuyerId" value="bId01">
+            </td>
+        </tr>
+        <tr id="TrBuyerName">
+            <td>买家昵称</td>
+            <td width="77%">
+                <input id="inBuyerName" type="text" name="BuyerName" value="bName01">
+            </td>
+        </tr>
+        <tr id="TrSellerId">
+            <td>卖家会员编号</td>
+            <td width="77%">
+                <input id="inSellerId" type="text" name="SellerId" value="sId01">
+            </td>
+        </tr>
+        <tr id="TrSellerName">
+            <td>卖家昵称</td>
+            <td width="77%">
+                <input id="inSellerName" type="text" name="SellerName" value="sName01">
+            </td>
+        </tr>
+
+        <tr id="TrGoodsInfo">
+            <td width="23%">
+                商品信息:
+            </td>
+            <td></td>
+        </tr>
+        <tr id="TrGoodsName">
+            <td>商品名称</td>
+            <td width="77%">
+                <input id="inGoodsName" type="text" name="GoodsName" value="Cake01">
+            </td>
+        </tr>
+        <tr id="TrGoodsTxt">
+            <td>商品简称</td>
+            <td width="77%">
+                <input id="inGoodsTxt" type="text" name="GoodsTxt" value="C01">
+            </td>
+        </tr>
+        <tr id="TrGoodsDesc">
+            <td>商品详情</td>
+            <td width="77%">
+                <input id="inGoodsDesc" type="text" name="GoodsDesc" value="Genaral01">
+            </td>
+        </tr>
+
+        <tr id="TrTranInfo">
+            <td width="23%">
+                交易信息:
+            </td>
+            <td></td>
+        </tr>
+        <tr id="TrTranModeId">
+            <td>交易类型*<br/>
+                &nbsp;&nbsp;E(escrow)担保交易<br/>
+                &nbsp;&nbsp;D(Direct)普通支付(单层协议)<br/>
+                &nbsp;&nbsp;F(Fastpay)二级清分<br/>
+                &nbsp;&nbsp;U(Current)实时到帐
+            </td>
+            <td width="77%" valign="top">
+                <input id="inTranModeId" type="text" name="TranModeId" value="E">
+            </td>
+        </tr>
+        <tr id="TrTranAmt">
+            <td>交易金额*</td>
+            <td width="77%">
+                <input id="inTranAmt" type="text" name="TranAmt" value="1.00">
+            </td>
+        </tr>
+        <tr id="TrTranCry">
+            <td>交易币种*</td>
+            <td width="77%">
+                <input id="inTranCry" type="text" name="TranCry" value="CNY">
+            </td>
+        </tr>
+        <tr id="TrMemoInfo">
+            <td width="23%">
+                备注信息:
+            </td>
+            <td></td>
+        </tr>
+        <tr id="TrBuyerMemo">
+            <td>买家备注</td>
+            <td width="77%">
+                <input id="inBuyerMemo" type="text" name="BuyerMemo" value="BuyerMemo">
+            </td>
+        </tr>
+        <tr id="TrSellerMemo">
+            <td>卖家备注</td>
+            <td width="77%">
+                <input id="inSellerMemo" type="text" name="SellerMemo" value="SellerMemo">
+            </td>
+        </tr>
+        <tr id="TrPlatMemo">
+            <td>平台商备注</td>
+            <td width="77%">
+                <input id="inPlatMemo" type="text" name="PlatMemo" value="PlatMemo">
+            </td>
+        </tr>
+
+        <tr id="TrOrderInfo2">
+            <td width="23%">
+                #####订单2#####
+            </td>
+            <td></td>
+        </tr>
+        <tr id="TrPtcInfo2">
+            <td width="23%">
+                协议信息:
+            </td>
+            <td></td>
+        </tr>
+        <tr id="TrSubMerPtcId2">
+            <td>二级商户签约协议号*</td>
+            <td width="77%">
+                <input id="inSubMerPtcId2" type="text" name="SubMerPtcId2" value="2BPAY1403042556">
+            </td>
+        </tr>
+        <tr id="TrBusiInfo2">
+            <td width="23%">
+                业务信息:
+            </td>
+            <td></td>
+        </tr>
+        <tr id="TrMerOrderNo2">
+            <td>平台商户（外部）订单号*</td>
+            <td width="77%">
+                <input id="inMerOrderNo2" type="text" name="MerOrderNo2" value="">
+            </td>
+        </tr>
+        <tr id="TrUserInfo2">
+            <td width="23%">
+                会员信息:
+            </td>
+            <td></td>
+        </tr>
+        <tr id="TrBuyerId2">
+            <td>买家会员编号</td>
+            <td width="77%">
+                <input id="inBuyerId2" type="text" name="BuyerId2" value="bId01">
+            </td>
+        </tr>
+        <tr id="TrBuyerName2">
+            <td>买家昵称</td>
+            <td width="77%">
+                <input id="inBuyerName2" type="text" name="BuyerName2" value="bName01">
+            </td>
+        </tr>
+        <tr id="TrSellerId2">
+            <td>卖家会员编号</td>
+            <td width="77%">
+                <input id="inSellerId2" type="text" name="SellerId2" value="sId01">
+            </td>
+        </tr>
+        <tr id="TrSellerName2">
+            <td>卖家昵称</td>
+            <td width="77%">
+                <input id="inSellerName2" type="text" name="SellerName2" value="sName01">
+            </td>
+        </tr>
+
+        <tr id="TrGoodsInfo2">
+            <td width="23%">
+                商品信息:
+            </td>
+            <td></td>
+        </tr>
+        <tr id="TrGoodsName2">
+            <td>商品名称</td>
+            <td width="77%">
+                <input id="inGoodsName2" type="text" name="GoodsName2" value="Cake01">
+            </td>
+        </tr>
+        <tr id="TrGoodsTxt2">
+            <td>商品简称</td>
+            <td width="77%">
+                <input id="inGoodsTxt2" type="text" name="GoodsTxt2" value="C01">
+            </td>
+        </tr>
+        <tr id="TrGoodsDesc2">
+            <td>商品详情</td>
+            <td width="77%">
+                <input id="inGoodsDesc2" type="text" name="GoodsDesc2" value="Genaral01">
+            </td>
+        </tr>
+
+        <tr id="TrTranInfo2">
+            <td width="23%">
+                交易信息:
+            </td>
+            <td></td>
+        </tr>
+        <tr id="TrTranModeId2">
+            <td>交易类型*<br/>
+                &nbsp;&nbsp;E(escrow)担保交易<br/>
+                &nbsp;&nbsp;D(Direct)普通支付(单层协议)<br/>
+                &nbsp;&nbsp;F(Fastpay)二级清分<br/>
+                &nbsp;&nbsp;U(Current)实时到帐
+            </td>
+            <td width="77%" valign="top">
+                <input id="inTranModeId2" type="text" name="TranModeId2" value="E">
+            </td>
+        </tr>
+        <tr id="TrTranAmt2">
+            <td>交易金额*</td>
+            <td width="77%">
+                <input id="inTranAmt2" type="text" name="TranAmt2" value="1.00">
+            </td>
+        </tr>
+        <tr id="TrTranCry2">
+            <td>交易币种*</td>
+            <td width="77%">
+                <input id="inTranCry2" type="text" name="TranCry2" value="CNY">
+            </td>
+        </tr>
+
+        <tr id="TrMemoInfo2">
+            <td width="23%">
+                备注信息:
+            </td>
+            <td></td>
+        </tr>
+        <tr id="TrBuyerMemo2">
+            <td>买家备注</td>
+            <td width="77%">
+                <input id="inBuyerMemo2" type="text" name="BuyerMemo2" value="BuyerMemo">
+            </td>
+        </tr>
+        <tr id="TrSellerMemo2">
+            <td>卖家备注</td>
+            <td width="77%">
+                <input id="inSellerMemo2" type="text" name="SellerMemo2" value="SellerMemo">
+            </td>
+        </tr>
+        <tr id="TrPlatMemo2">
+            <td>平台商备注</td>
+            <td width="77%">
+                <input id="inPlatMemo2" type="text" name="PlatMemo2" value="PlatMemo">
+            </td>
+        </tr>
+
+    </table>
+    <p>
+        &nbsp;
+    </p>
+</form>
+</body>
+</html>

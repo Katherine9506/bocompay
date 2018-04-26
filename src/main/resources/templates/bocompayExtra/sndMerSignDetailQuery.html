@@ -1,0 +1,104 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>二级商户签约信息查询(BPAYPY4026)</title>
+    <script language="javascript">
+        function createOrderInfo() {
+            var tmpDate = new Date();
+            var day = tmpDate.getDate();
+            var month = tmpDate.getMonth() + 1;
+            var year = tmpDate.getFullYear();
+            var hours = tmpDate.getHours();
+            var minutes = tmpDate.getMinutes();
+            var seconds = tmpDate.getSeconds();
+
+            month = ((month < 10) ? "0" : "") + month;
+            day = ((day < 10) ? "0" : "") + day;
+            hours = ((hours < 10) ? "0" : "") + hours;
+            minutes = ((minutes < 10) ? "0" : "") + minutes;
+            seconds = ((seconds < 10) ? "0" : "") + seconds;
+
+            document.all.TranDate.value = year + month + day;
+            document.all.TranTime.value = hours + minutes + seconds;
+
+        }
+    </script>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+<form name="form1" method="post" action="sndMerSignDetailQuery.jsp">
+    <p>
+        <input type="hidden" name="merCert" value=""> 二级商户签约信息查询(BPAYPY4026)
+    </p>
+
+    <hr/>
+    <p>
+        <font color="blue">商户证书ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>
+        <input type="text" style="border-color:blue" name="MerCertID" value="301140880629503">
+    </p>
+    <hr/>
+
+    <table width="75%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td width="23%">
+                交易码
+            </td>
+
+            <td width="77%">
+                <input type="text" name="TranCode" value="BPAYPY4026">
+                <input type="submit" id="Submit" value="提交" name="submit">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                一级商户协议号*
+            </td>
+
+            <td width="77%">
+                <input type="text" name="MerPtcId" value="1BPAY1403040882">
+            </td>
+        </tr>
+
+        <tr>
+            <td width="23%">
+                请求日期*
+            </td>
+
+            <td width="77%">
+                <input type="text" name="TranDate" value=""> yyyyMMdd
+                <input type="button" name="createOrderId" value="生成时间" onClick="javascript:createOrderInfo();">
+
+            </td>
+        </tr>
+
+        <tr>
+            <td width="23%">
+                请求时间*
+            </td>
+
+            <td width="77%">
+                <input type="text" name="TranTime" value=""> HHmmss
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+
+            </td>
+            <td>以下两个参数不能同时为空</td>
+        </tr>
+        <tr>
+            <td width="23%">
+                二级商户协议号*
+            </td>
+            <td width="77%">
+                <input type="text" name="SubMerPtcId" value="2BPAY1403042556">
+            </td>
+        </tr>
+    </table>
+
+    <p>
+        &nbsp;
+    </p>
+</form>
+</body>
+</html>

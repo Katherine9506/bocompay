@@ -1,0 +1,595 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>二级商户签约信息新增(BPAYPY4028)</title>
+    <script language="javascript">
+        function createOrderInfo() {
+            var tmpDate = new Date();
+            var day = tmpDate.getDate();
+            var month = tmpDate.getMonth() + 1;
+            var year = tmpDate.getFullYear();
+            var hours = tmpDate.getHours();
+            var minutes = tmpDate.getMinutes();
+            var seconds = tmpDate.getSeconds();
+
+            month = ((month < 10) ? "0" : "") + month;
+            day = ((day < 10) ? "0" : "") + day;
+            hours = ((hours < 10) ? "0" : "") + hours;
+            minutes = ((minutes < 10) ? "0" : "") + minutes;
+            seconds = ((seconds < 10) ? "0" : "") + seconds;
+
+            document.all.TranDate.value = year + month + day;
+            document.all.TranTime.value = hours + minutes + seconds;
+
+        }
+    </script>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+<form name="form1" method="post" action="sndMerSignAdd.jsp">
+    <p>
+        <input type="hidden" name="merCert" value=""> 二级商户签约信息新增(BPAYPY4028)
+    </p>
+    <hr/>
+    <p>
+        <font color="blue">商户证书ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>
+        <input type="text" style="border-color:blue" name="MerCertID" value="301140880629503">
+    </p>
+    <hr/>
+    <table width="75%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td width="23%">
+                交易码
+            </td>
+            <td width="77%">
+                <input type="text" name="TranCode" value="BPAYPY4028">
+                <input type="submit" id="Submit" value="提交" name="submit">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                一级商户协议号*
+            </td>
+
+            <td width="77%">
+                <input type="text" name="MerPtcId" value="1BPAY1403040882">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                请求日期*
+            </td>
+
+            <td width="77%">
+                <input type="text" name="TranDate" value=""> yyyyMMdd
+                <input type="button" name="createOrderId" value="生成时间" onClick="javascript:createOrderInfo();">
+
+            </td>
+        </tr>
+
+        <tr>
+            <td width="23%">
+                请求时间*
+            </td>
+
+            <td width="77%">
+                <input type="text" name="TranTime" value=""> HHmmss
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                商户基本信息:
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td width="23%">
+                企业网银客户号
+            </td>
+            <td width="77%">
+                <input type="text" name="CstNo" value="0000090246">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                核心客户号
+            </td>
+            <td width="77%">
+                <input type="text" name="HostNo" value="3100046743284">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                企业中文名称
+            </td>
+            <td width="77%">
+                <input type="text" name="EnterNameCN" value="某某公司">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                企业英文名称
+            </td>
+            <td width="77%">
+                <input type="text" name="EnterNameEN" value="EnterNameEN">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                证件类型
+            </td>
+            <td width="77%">
+                <input type="text" name="CertType" value="00">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                证件号码
+            </td>
+            <td width="77%">
+                <input type="text" name="CertNo" value="000111">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                商户开户分行
+            </td>
+            <td width="77%">
+                <input type="text" name="OpenBra" value="310999">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                商户开户网点
+            </td>
+            <td width="77%">
+                <input type="text" name="OpenNode" value="310900">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                商户业务信息:
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td width="23%">
+                商户中文名称
+            </td>
+            <td width="77%">
+                <input type="text" name="MerchNameCN" value="某某组织">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                商户英文名称
+            </td>
+            <td width="77%">
+                <input type="text" name="MerchNameEN" value="MerchNameEN">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                ICP号
+            </td>
+            <td width="77%">
+                <input type="text" name="ICP" value="12345123451234512345">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                商户类别
+            </td>
+            <td width="77%">
+                <input type="text" name="MerchType" value="4899">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                商户网站域名
+            </td>
+            <td width="77%">
+                <input type="text" name="WebsiteURL" value="http://business.bankcomm.com/">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                商户地址
+            </td>
+            <td width="77%">
+                <input type="text" name="MerchAddr" value="MerchAddr">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                联系人姓名
+            </td>
+            <td width="77%">
+                <input type="text" name="ContacterName" value="zs">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                联系电话
+            </td>
+            <td width="77%">
+                <input type="text" name="PhoneNo" value="12345678901234567890">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                手机号码
+            </td>
+            <td width="77%">
+                <input type="text" name="MobileNo" value="12345678901234567890">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                电子邮箱地址
+            </td>
+            <td width="77%">
+                <input type="text" name="EmailAddr" value="zs@qq.com">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                商户情况说明
+            </td>
+            <td width="77%">
+                <input type="text" name="MerchDetailInfo" value="general">
+            </td>
+        </tr>
+
+        <tr>
+            <td width="23%">
+                二级商户会员编号
+            </td>
+            <td width="77%">
+                <input type="text" name="SubMerMemId" value="abc123">
+            </td>
+        </tr>
+
+        <tr>
+            <td width="23%">
+                商户备注
+            </td>
+            <td width="77%">
+                <input type="text" name="MerchMemo" value="MerchMemo">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                商户协议参数信息:
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td width="23%">
+                手续费收取周期
+            </td>
+            <td width="77%">
+                <input type="text" name="FeePeriod" value="D">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                退货返还手续费
+            </td>
+            <td width="77%">
+                <input type="text" name="ReturnFeeFlg" value="0">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                手续费分类代码
+            </td>
+            <td width="77%">
+                <input type="text" name="FeeGroupId" value="9257">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                商户协议备注
+            </td>
+            <td width="77%">
+                <input type="text" name="PtcMemo" value="PtcMemo">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                帐号信息列表:
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td width="23%">
+                ####结算帐号信息:####
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td width="23%">
+                账户用途
+            </td>
+            <td width="77%">
+                <input type="text" name="Purpose1" value="01" readonly style="background-color:gray">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                账号
+            </td>
+            <td width="77%">
+                <input type="text" name="Account1" value="221000601012014002595">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                币种
+            </td>
+            <td width="77%">
+                <input type="text" name="CurrType1" value="CNY">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                账号户名
+            </td>
+            <td width="77%">
+                <input type="text" name="AccName1" value="长春大地物业管理有限公司">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                账户类型
+            </td>
+            <td width="77%">
+                <input type="text" name="AccType1" value="4">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                开户银行
+            </td>
+            <td width="77%">
+                <input type="text" name="BankId1" value="BANKCOMM">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                所属分行
+            </td>
+            <td width="77%">
+                <input type="text" name="BranchId1" value="221900">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                所属分行名称
+            </td>
+            <td width="77%">
+                <input type="text" name="BranchName1" value="长春分行">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                开户网点
+            </td>
+            <td width="77%">
+                <input type="text" name="DeptNo1" value="221900">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                开户网点名称
+            </td>
+            <td width="77%">
+                <input type="text" name="DeptName1" value="长春分行某网点">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                账号备注
+            </td>
+            <td width="77%">
+                <input type="text" name="AccMemo1" value="1">
+            </td>
+        </tr>
+
+        <tr>
+            <td width="23%">
+                ####退款帐号信息:####
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td width="23%">
+                账户用途
+            </td>
+            <td width="77%">
+                <input type="text" name="Purpose2" value="02" readonly style="background-color:gray">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                账号
+            </td>
+            <td width="77%">
+                <input type="text" name="Account2" value="221000601012014002595">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                币种
+            </td>
+            <td width="77%">
+                <input type="text" name="CurrType2" value="CNY">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                账号户名
+            </td>
+            <td width="77%">
+                <input type="text" name="AccName2" value="长春大地物业管理有限公司">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                账户类型
+            </td>
+            <td width="77%">
+                <input type="text" name="AccType2" value="4">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                开户银行
+            </td>
+            <td width="77%">
+                <input type="text" name="BankId2" value="BANKCOMM">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                所属分行
+            </td>
+            <td width="77%">
+                <input type="text" name="BranchId2" value="221900">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                所属分行名称
+            </td>
+            <td width="77%">
+                <input type="text" name="BranchName2" value="长春分行">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                开户网点
+            </td>
+            <td width="77%">
+                <input type="text" name="DeptNo2" value="221900">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                开户网点名称
+            </td>
+            <td width="77%">
+                <input type="text" name="DeptName2" value="长春分行某网点">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                账号备注
+            </td>
+            <td width="77%">
+                <input type="text" name="AccMemo2" value="1">
+            </td>
+        </tr>
+
+        <tr>
+            <td width="23%">
+                ####手续费帐号信息:####
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td width="23%">
+                账户用途
+            </td>
+            <td width="77%">
+                <input type="text" name="Purpose3" value="03" readonly style="background-color:gray">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                账号
+            </td>
+            <td width="77%">
+                <input type="text" name="Account3" value="221000601012014002595">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                币种
+            </td>
+            <td width="77%">
+                <input type="text" name="CurrType3" value="CNY">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                账号户名
+            </td>
+            <td width="77%">
+                <input type="text" name="AccName3" value="长春大地物业管理有限公司">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                账户类型
+            </td>
+            <td width="77%">
+                <input type="text" name="AccType3" value="4">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                开户银行
+            </td>
+            <td width="77%">
+                <input type="text" name="BankId3" value="BANKCOMM">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                所属分行
+            </td>
+            <td width="77%">
+                <input type="text" name="BranchId3" value="221900">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                所属分行名称
+            </td>
+            <td width="77%">
+                <input type="text" name="BranchName3" value="长春分行">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                开户网点
+            </td>
+            <td width="77%">
+                <input type="text" name="DeptNo3" value="221900">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                开户网点名称
+            </td>
+            <td width="77%">
+                <input type="text" name="DeptName3" value="长春分行某网点">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                账号备注
+            </td>
+            <td width="77%">
+                <input type="text" name="AccMemo3" value="1">
+            </td>
+        </tr>
+    </table>
+    <p>
+        &nbsp;
+    </p>
+</form>
+</body>
+</html>

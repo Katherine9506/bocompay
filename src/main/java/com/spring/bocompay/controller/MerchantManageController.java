@@ -2,9 +2,11 @@ package com.spring.bocompay.controller;
 
 import com.bocom.bocompay.BocomClient;
 import com.spring.bocompay.domain.merchant.MerRetNotifyUrl;
-import com.spring.bocompay.domain.merchant.MerSignDetail;
+import com.spring.bocompay.domain.merchant.MerSignDetailResponseMessage;
+import com.spring.bocompay.domain.merchant.SndMerSignDetailResponseMessage;
 import com.spring.bocompay.service.merchant.MerRetNotifyUrlService;
 import com.spring.bocompay.service.merchant.MerSignDetailService;
+import com.spring.bocompay.service.merchant.SndMerSignDetailService;
 import com.spring.bocompay.util.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ClassUtils;
@@ -27,6 +29,8 @@ public class MerchantManageController {
     private MerRetNotifyUrlService merRetNotifyUrlService;
     @Autowired
     private MerSignDetailService merSignDetailService;
+    @Autowired
+    private SndMerSignDetailService sndMerSignDetailService;
 
     /**
      * @param
@@ -117,11 +121,11 @@ public class MerchantManageController {
             client.setHead("TranTime", TranTime);
 
             String rst = client.execute(MerCertID, TranCode);
-            MerSignDetail merSignDetail = null;
+            MerSignDetailResponseMessage merSignDetail = null;
             if (rst == null) {
                 responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
             } else {
-                merSignDetail = new MerSignDetail(
+                merSignDetail = new MerSignDetailResponseMessage(
                         client.changeNull(client.getHead("RspType")),
                         client.changeNull(client.getHead("RspCode")),
                         client.changeNull(client.getHead("RspMsg")),
@@ -132,6 +136,52 @@ public class MerchantManageController {
                     responseMessage = new ResponseMessage(true, merSignDetail.getRspMsg(), 201, merSignDetail);
                 } else {
                     responseMessage = merSignDetailService.fillMerSignDetail(client, merSignDetail);
+                }
+            }
+        }
+        return responseMessage;
+    }
+
+    @PostMapping(value = "sndMerSignDetailQuery")
+    public ResponseMessage sndMerSignDetailQuery(HttpServletRequest request) {
+        ResponseMessage responseMessage = null;
+        String MerCertID = request.getParameter("MerCertID").trim();
+        String xmlConfigPath = ClassUtils.getDefaultClassLoader().getResource("").getPath() + "static\\ini\\BocompayMerchant.xml";
+
+        BocomClient client = new BocomClient();
+
+        int ret = client.initialize(xmlConfigPath);
+        if (ret != 0) {
+            responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
+        } else {
+            String TranCode = request.getParameter("TranCode");
+            String MerPtcId = request.getParameter("MerPtcId");
+            String TranDate = request.getParameter("TranDate");
+            String TranTime = request.getParameter("TranTime");
+
+            client.setHead("TranCode", TranCode);
+            client.setHead("MerPtcId", MerPtcId);
+            client.setHead("TranDate", TranDate);
+            client.setHead("TranTime", TranTime);
+
+            client.setData("SubMerPtcId", request.getParameter("SubMerPtcId"));
+
+            String rst = client.execute(MerCertID, TranCode);
+            SndMerSignDetailResponseMessage sndMerSignDetail = null;
+            if (rst == null) {
+                responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
+            } else {
+                sndMerSignDetail = new SndMerSignDetailResponseMessage(
+                        client.changeNull(client.getHead("RspType")),
+                        client.changeNull(client.getHead("RspCode")),
+                        client.changeNull(client.getHead("RspMsg")),
+                        client.changeNull(client.getHead("RspDate")),
+                        client.changeNull(client.getHead("RspTime"))
+                );
+                if ("E".equalsIgnoreCase(sndMerSignDetail.getRspType())) {
+                    responseMessage = new ResponseMessage(true, sndMerSignDetail.getRspMsg(), 201, sndMerSignDetail);
+                } else {
+                    responseMessage = sndMerSignDetailService.fillSndMerSignDetail(client, sndMerSignDetail);
                 }
             }
         }

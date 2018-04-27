@@ -9,7 +9,6 @@ import com.spring.bocompay.util.ResponseMessage;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +26,7 @@ public class MerSignDetailService extends BaseService {
      * @author: Katherine
      * @create: 2018/4/26 18:34
      */
-    public ResponseMessage fillMerSignDetail(BocomClient client, MerSignDetail merSignDetail) {
+    public ResponseMessage fillMerSignDetail(BocomClient client, MerSignDetailResponseMessage merSignDetail) {
         Map opInfoMap = client.getOpInfoMap();
         //MerBaseInfo  商户基本信息
         merSignDetail.setMerBaseInfo(this.prepareMerBaseInfo((OpInfo) opInfoMap.get("MerBaseInfo")));
@@ -49,53 +48,54 @@ public class MerSignDetailService extends BaseService {
         return this.success(merSignDetail);
     }
 
-    private Map<String, String> prepareMerBaseInfo(OpInfo merBaseInfo) {
-        Map<String, String> map = new HashMap<>();
-        map.put("MerId", merBaseInfo.getValueByName("MerId"));
-        map.put("CstNo", merBaseInfo.getValueByName("CstNo"));
-        map.put("HostNo", merBaseInfo.getValueByName("HostNo"));
-        map.put("EnterNameCN", merBaseInfo.getValueByName("EnterNameCN"));
-        map.put("EnterNameEN", merBaseInfo.getValueByName("EnterNameEN"));
-        map.put("CertType", merBaseInfo.getValueByName("CertType"));
-        map.put("CertNo", merBaseInfo.getValueByName("CertNo"));
-        map.put("OpenBra", merBaseInfo.getValueByName("OpenBra"));
-        map.put("OpenNode", merBaseInfo.getValueByName("OpenNode"));
-        return map;
+    private MerBaseInfo prepareMerBaseInfo(OpInfo merBaseInfo) {
+        return new MerBaseInfo(
+                merBaseInfo.getValueByName("MerId"),
+                merBaseInfo.getValueByName("CstNo"),
+                merBaseInfo.getValueByName("HostNo"),
+                merBaseInfo.getValueByName("EntNameCN"),
+                merBaseInfo.getValueByName("EntNameEN"),
+                merBaseInfo.getValueByName("CertType"),
+                merBaseInfo.getValueByName("CertNo"),
+                merBaseInfo.getValueByName("OpenBra"),
+                merBaseInfo.getValueByName("OpenNode")
+        );
     }
 
-    private Map<String, String> prepareMerBusInfo(OpInfo merBusInfo) {
-        Map<String, String> map = new HashMap<>();
-        map.put("MerchNameCN", merBusInfo.getValueByName("MerchNameCN"));
-        map.put("MerchNameEN", merBusInfo.getValueByName("MerchNameEN"));
-        map.put("ICP", merBusInfo.getValueByName("ICP"));
-        map.put("MerchType", merBusInfo.getValueByName("MerchType"));
-        map.put("WebsiteURL", merBusInfo.getValueByName("WebsiteURL"));
-        map.put("MerchAddr", merBusInfo.getValueByName("MerchAddr"));
-        map.put("ContacterName", merBusInfo.getValueByName("ContacterName"));
-        map.put("PhoneNo", merBusInfo.getValueByName("PhoneNo"));
-        map.put("MobileNo", merBusInfo.getValueByName("MobileNo"));
-        map.put("EmailAddr", merBusInfo.getValueByName("EmailAddr"));
-        map.put("MerchDetailInfo", merBusInfo.getValueByName("MerchDetailInfo"));
-        map.put("MerchMemo", merBusInfo.getValueByName("MerchMemo"));
-        return map;
+    private MerBusInfo prepareMerBusInfo(OpInfo merBusInfo) {
+        return new MerBusInfo(
+                merBusInfo.getValueByName("MerchNameCN"),
+                merBusInfo.getValueByName("MerchNameEN"),
+                merBusInfo.getValueByName("ICP"),
+                merBusInfo.getValueByName("MerchType"),
+                merBusInfo.getValueByName("WebsiteURL"),
+                merBusInfo.getValueByName("MerchAddr"),
+                merBusInfo.getValueByName("ContacterName"),
+                merBusInfo.getValueByName("PhoneNo"),
+                merBusInfo.getValueByName("MobileNo"),
+                merBusInfo.getValueByName("EmailAddr"),
+                merBusInfo.getValueByName("MerchDetailInfo"),
+                merBusInfo.getValueByName("MerchMemo"),
+                null
+        );
     }
 
-    private Map<String, String> prepareMerPtcInfo(OpInfo merPtcInfo) {
-        Map<String, String> map = new HashMap<>();
-        map.put("MerPtcId", merPtcInfo.getValueByName("MerPtcId"));
-        map.put("TranType", merPtcInfo.getValueByName("TranType"));
-        map.put("TotalLayer", merPtcInfo.getValueByName("TotalLayer"));
-        map.put("TranMode", merPtcInfo.getValueByName("TranMode"));
-        map.put("SubPtcCreMod", merPtcInfo.getValueByName("SubPtcCreMod"));
-        map.put("FeeChgObj", merPtcInfo.getValueByName("FeeChgObj"));
-        map.put("FeePeriod", merPtcInfo.getValueByName("FeePeriod"));
-        map.put("ReturnFeeFlg", merPtcInfo.getValueByName("ReturnFeeFlg"));
-        map.put("FeeGroupId", merPtcInfo.getValueByName("FeeGroupId"));
-        map.put("ReturnURL", merPtcInfo.getValueByName("ReturnURL"));
-        map.put("NotifyURL", merPtcInfo.getValueByName("NotifyURL"));
-        map.put("PtcStatus", merPtcInfo.getValueByName("PtcStatus"));
-        map.put("PtcMemo", merPtcInfo.getValueByName("PtcMemo"));
-        return map;
+    private MerPtcInfo prepareMerPtcInfo(OpInfo merPtcInfo) {
+        return new MerPtcInfo(
+                merPtcInfo.getValueByName("MerPtcId"),
+                merPtcInfo.getValueByName("TranType"),
+                merPtcInfo.getValueByName("TotalLayer"),
+                merPtcInfo.getValueByName("TranMode"),
+                merPtcInfo.getValueByName("SubPtcCreMod"),
+                merPtcInfo.getValueByName("FeeChgObj"),
+                merPtcInfo.getValueByName("FeePeriod"),
+                merPtcInfo.getValueByName("ReturnFeeFlg"),
+                merPtcInfo.getValueByName("FeeGroupId"),
+                merPtcInfo.getValueByName("ReturnURL"),
+                merPtcInfo.getValueByName("NotifyURL"),
+                merPtcInfo.getValueByName("PtcStatus"),
+                merPtcInfo.getValueByName("PtcMemo")
+        );
     }
 
     private List<ExtMerIdInfo> prepareExtMerIdList(OpList extMerIdList) {

@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+
 /**
  * @description: TODO
  * @author: Katherine
@@ -17,5 +18,10 @@ public class BocompayExtraGetController {
     @GetMapping("merSignDetailQuery")
     public ModelAndView merSignDetailQuery() {
         return new ModelAndView("bocompayExtra/merSignDetailQuery");
+    }
+
+    @GetMapping("sndMerSignDetailQuery")
+    public ModelAndView sndMerSignDetailQuery() {
+        return new ModelAndView("bocompayExtra/sndMerSignDetailQuery");
     }
 }

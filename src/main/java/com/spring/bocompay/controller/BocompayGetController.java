@@ -43,4 +43,9 @@ public class BocompayGetController {
         ModelAndView modelAndView = new ModelAndView("/bocompayExtra/extraIndex");
         return modelAndView;
     }
+
+    @GetMapping("onekeyIndex")
+    public ModelAndView onekeyIndex() {
+        return new ModelAndView("/bocompayOnekey/onekeyIndex");
+    }
 }

@@ -56,7 +56,6 @@ public class BocompayTradeController {
         }
         client = prepareBocomClient(client, transaction);
         String signData = client.toSignString(transaction.getMerCertID());//密文
-        System.out.println("signData: " + signData);
 
         attrs.addAttribute("signData", signData);
         return new RedirectView(BocompaySetting.BpayOrderPayURL);

@@ -296,15 +296,15 @@ public class MerchantManageController {
             if (rst == null) {
                 responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
             } else {
+                Map<String, String> rtnMap = new HashMap<>();
+                rtnMap.put("RspType", client.getHead("RspType"));
+                rtnMap.put("RspCode", client.getHead("RspCode"));
+                rtnMap.put("RspMsg", client.getHead("RspMsg"));
+                rtnMap.put("RspDate", client.getHead("RspDate"));
+                rtnMap.put("RspTime", client.getHead("RspTime"));
                 if ("E".equalsIgnoreCase(client.getHead("RspType"))) {
-                    responseMessage = new ResponseMessage(true, client.getHead("RspMsg"), 201, null);
+                    responseMessage = new ResponseMessage(true, client.getHead("RspMsg"), 201, rtnMap);
                 } else {
-                    Map<String, String> rtnMap = new HashMap<>();
-                    rtnMap.put("RspType", client.getHead("RspType"));
-                    rtnMap.put("RspCode", client.getHead("RspCode"));
-                    rtnMap.put("RspMsg", client.getHead("RspMsg"));
-                    rtnMap.put("RspDate", client.getHead("RspDate"));
-                    rtnMap.put("RspTime", client.getHead("RspTime"));
                     rtnMap.put("MerPtcId", client.getData("MerPtcId"));
                     rtnMap.put("SubMerPtcId", client.getData("SubMerPtcId"));
                     responseMessage = new ResponseMessage(true, "成功", 200, rtnMap);

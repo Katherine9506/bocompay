@@ -24,4 +24,9 @@ public class BocompayExtraGetController {
     public ModelAndView sndMerSignDetailQuery() {
         return new ModelAndView("bocompayExtra/sndMerSignDetailQuery");
     }
+
+    @GetMapping("sndMerSignAdd")
+    public ModelAndView sndMerSignAdd() {
+        return new ModelAndView("bocompayExtra/sndMerSignAdd");
+    }
 }

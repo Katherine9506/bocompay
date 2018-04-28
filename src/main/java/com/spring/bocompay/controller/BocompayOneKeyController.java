@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("bocompay/onekey")
-public class BocompayOneKeyController {
+public class BocompayOneKeyController extends BaseController {
 
     /**
      * @description: 一键支付付款账户签约<    BPAYPY4161>
@@ -74,38 +74,15 @@ public class BocompayOneKeyController {
             responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
         } else {
             String TranCode = request.getParameter("TranCode");
-            client.setHead("TranCode", TranCode);
-            client.setHead("MerPtcId", request.getParameter("MerPtcId"));
-            client.setHead("TranDate", request.getParameter("TranDate"));
-            client.setHead("TranTime", request.getParameter("TranTime"));
-
+            client = this.initializeRequest(request, client);
             client.setData("MerAgreeNo", request.getParameter("MerAgreeNo"));
 
-            String rst = client.execute(MerCertID, TranCode, "ONEKEY");
-            if (rst == null) {
-                responseMessage = new ResponseMessage(true, client.getLastErr(), 500, null);
-            } else {
-                Map<String, String> map = new HashMap<>();
-                map.put("RspType", client.getHead("RspType"));
-                map.put("RspCode", client.getHead("RspCode"));
-                map.put("RspMsg", client.getHead("RspMsg"));
-                map.put("RspDate", client.getHead("RspDate"));
-                map.put("RspTime", client.getHead("RspTime"));
-
-                if ("E".equalsIgnoreCase(client.getHead("RspType"))) {
-                    responseMessage = new ResponseMessage(true, client.getHead("RspMsg"), 201, map);
-                } else {
-                    map.put("AgreeNo", client.getData("AgreeNo"));
-                    map.put("MerAgreeNo", client.getData("MerAgreeNo"));
-                    map.put("CardNo", client.getData("CardNo"));
-                    map.put("State", client.getData("State"));
-                    map.put("MerComment", client.getData("MerComment"));
-                    responseMessage = new ResponseMessage(true, "成功", 200, map);
-                }
-            }
+            Map<String, Object> responseData = this.toResponseDataWithOneKeyPay(client);
+            responseMessage = this.responseRecWithTranType(client, MerCertID, TranCode, "ONEKEY", responseData);
         }
         return responseMessage;
     }
+
 
     /**
      * @description: 一键支付协议撤约<BPAYPY4163>
@@ -124,31 +101,12 @@ public class BocompayOneKeyController {
             responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
         } else {
             String TranCode = request.getParameter("TranCode");
-            client.setHead("TranCode", TranCode);
-            client.setHead("MerPtcId", request.getParameter("MerPtcId"));
-            client.setHead("TranDate", request.getParameter("TranDate"));
-            client.setHead("TranTime", request.getParameter("TranTime"));
+            client = this.initializeRequest(request, client);
 
             client.setData("AgreeNo", request.getParameter("AgreeNo"));
 
-            String rst = client.execute(MerCertID, TranCode, "ONEKEY");
-            if (rst == null) {
-                responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
-            } else {
-                Map<String, String> map = new HashMap<>();
-                map.put("RspType", client.getHead("RspType"));
-                map.put("RspCode", client.getHead("RspCode"));
-                map.put("RspMsg", client.getHead("RspMsg"));
-                map.put("RspDate", client.getHead("RspDate"));
-                map.put("RspTime", client.getHead("RspTime"));
-                if ("E".equalsIgnoreCase(client.changeNull(client.getHead("RspType")))) {
-                    responseMessage = new ResponseMessage(true, client.getHead("RspMsg"), 201, map);
-                } else {
-                    responseMessage = new ResponseMessage(true, "成功", 200, map);
-                }
-            }
+            responseMessage = this.responseRecWithTranType(client, MerCertID, TranCode, "ONEKEY", null);
         }
-
         return responseMessage;
     }
 
@@ -168,35 +126,17 @@ public class BocompayOneKeyController {
             responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
         } else {
             String TranCode = request.getParameter("TranCode");
-            client.setHead("TranCode", TranCode);
-            client.setHead("MerPtcId", request.getParameter("MerPtcId"));
-            client.setHead("TranDate", request.getParameter("TranDate"));
-            client.setHead("TranTime", request.getParameter("TranTime"));
+            client = this.initializeRequest(request, client);
 
             client.setData("AgreeNo", request.getParameter("AgreeNo"));
             client.setData("MerAgreeNo", request.getParameter("MerAgreeNo"));
             client.setData("Amount", request.getParameter("Amount"));
             client.setData("ApplyTime", request.getParameter("ApplyTime"));
 
-            String rst = client.execute(MerCertID, TranCode, "ONEKEY");
-            if (rst == null) {
-                responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
-            } else {
-                Map<String, String> map = new HashMap<>();
-                map.put("RspType", client.getHead("RspType"));
-                map.put("RspCode", client.getHead("RspCode"));
-                map.put("RspMsg", client.getHead("RspMsg"));
-                map.put("RspDate", client.getHead("RspDate"));
-                map.put("RspTime", client.getHead("RspTime"));
-
-                if ("E".equalsIgnoreCase(client.getHead("RspType"))) {
-                    responseMessage = new ResponseMessage(true, client.getHead("RspMsg"), 201, map);
-                } else {
-                    map.put("SessionID", client.getData("SessionID"));
-                    map.put("Mobile", client.getData("Mobile"));
-                    responseMessage = new ResponseMessage(true, "成功", 200, map);
-                }
-            }
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("SessionID", client.getData("SessionID"));
+            responseData.put("Mobile", client.getData("Mobile"));
+            responseMessage = this.responseRecWithTranType(client, MerCertID, TranCode, "ONEKEY", responseData);
         }
         return responseMessage;
     }
@@ -212,10 +152,7 @@ public class BocompayOneKeyController {
             responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
         } else {
             String TranCode = request.getParameter("TranCode");
-            client.setHead("TranCode", TranCode);
-            client.setHead("MerPtcId", request.getParameter("MerPtcId"));
-            client.setHead("TranDate", request.getParameter("TranDate"));
-            client.setHead("TranTime", request.getParameter("TranTime"));
+            client = this.initializeRequest(request, client);
 
             client.setData("MerTranSerialNo", request.getParameter("MerTranSerialNo"));
             client.setData("SafeReserved", request.getParameter("SafeReserved"));
@@ -266,27 +203,8 @@ public class BocompayOneKeyController {
             MemoInfo.setData("PayMemo", request.getParameter("PayMemo"));
             client.setData("MemoInfo", MemoInfo.toString());
 
-            String rst = client.execute(MerCertID, TranCode);
-            if (rst == null) {
-                responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
-            } else {
-                Map<String, String> map = new HashMap<>();
-                map.put("RspType", client.getHead("RspType"));
-                map.put("RspCode", client.getHead("RspCode"));
-                map.put("RspMsg", client.getHead("RspMsg"));
-                map.put("RspDate", client.getHead("RspDate"));
-                map.put("RspTime", client.getHead("RspTime"));
-                if ("E".equalsIgnoreCase(client.changeNull(client.getHead("RspType")))) {
-                    responseMessage = new ResponseMessage(true, client.getHead("RspMsg"), 201, map);
-                } else {
-                    map.put("MerTranSerialNo", client.getData("MerTranSerialNo"));
-                    map.put("TranState", client.getData("TranState"));
-                    map.put("Amount", client.getData("Amount"));
-                    map.put("Currency", client.getData("Currency"));
-                    map.put("Bankcomment", client.getData("Bankcomment"));
-                    responseMessage = new ResponseMessage(true, "成功", 200, map);
-                }
-            }
+            Map<String, Object> responseData = this.toResponseDataWithOneKeyPay(client);
+            responseMessage = this.responseRec(client, MerCertID, TranCode, responseData);
         }
         return responseMessage;
     }
@@ -307,10 +225,7 @@ public class BocompayOneKeyController {
             responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
         } else {
             String TranCode = request.getParameter("TranCode");
-            client.setHead("TranCode", TranCode);
-            client.setHead("MerPtcId", request.getParameter("MerPtcId"));
-            client.setHead("TranDate", request.getParameter("TranDate"));
-            client.setHead("TranTime", request.getParameter("TranTime"));
+            client = this.initializeRequest(request, client);
 
             client.setData("TotalCount", request.getParameter("TotalCount"));
             client.setData("ChannelApi", request.getParameter("ChannelApi"));
@@ -380,27 +295,8 @@ public class BocompayOneKeyController {
             }
             client.setData("OrderList", forInnerInto);
 
-            String rst = client.execute(MerCertID, TranCode);
-            if (rst == null) {
-                responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
-            } else {
-                Map<String, String> map = new HashMap<>();
-                map.put("RspType", client.getHead("RspType"));
-                map.put("RspCode", client.getHead("RspCode"));
-                map.put("RspMsg", client.getHead("RspMsg"));
-                map.put("RspDate", client.getHead("RspDate"));
-                map.put("RspTime", client.getHead("RspTime"));
-                if ("E".equalsIgnoreCase(client.changeNull(client.getHead("RspType")))) {
-                    responseMessage = new ResponseMessage(true, client.getHead("RspMsg"), 201, map);
-                } else {
-                    map.put("MerTranSerialNo", client.getData("MerTranSerialNo"));
-                    map.put("TranState", client.getData("TranState"));
-                    map.put("Amount", client.getData("Amount"));
-                    map.put("Currency", client.getData("Currency"));
-                    map.put("Bankcomment", client.getData("Bankcomment"));
-                    responseMessage = new ResponseMessage(true, "成功", 200, map);
-                }
-            }
+            Map<String, Object> responseData = this.toResponseDataWithOneKeyPay(client);
+            responseMessage = this.responseRec(client, MerCertID, TranCode, responseData);
         }
         return responseMessage;
     }
@@ -421,10 +317,7 @@ public class BocompayOneKeyController {
             responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
         } else {
             String TranCode = request.getParameter("TranCode");
-            client.setHead("TranCode", TranCode);
-            client.setHead("MerPtcId", request.getParameter("MerPtcId"));
-            client.setHead("TranDate", request.getParameter("TranDate"));
-            client.setHead("TranTime", request.getParameter("TranTime"));
+            client = this.initializeRequest(request, client);
 
             client.setData("MerTranSerialNo", request.getParameter("MerTranSerialNo"));
             client.setData("SafeReserved", request.getParameter("SafeReserved"));
@@ -476,27 +369,8 @@ public class BocompayOneKeyController {
             map7.setData("PayMemo", request.getParameter("PayMemo"));
             client.setData("MemoInfo", map7.toString());
 
-            String rst = client.execute(MerCertID, TranCode);
-            if (rst == null) {
-                responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
-            } else {
-                Map<String, String> map = new HashMap<>();
-                map.put("RspType", client.getHead("RspType"));
-                map.put("RspCode", client.getHead("RspCode"));
-                map.put("RspMsg", client.getHead("RspMsg"));
-                map.put("RspDate", client.getHead("RspDate"));
-                map.put("RspTime", client.getHead("RspTime"));
-                if ("E".equalsIgnoreCase(client.changeNull(client.getHead("RspType")))) {
-                    responseMessage = new ResponseMessage(true, client.getHead("RspMsg"), 201, map);
-                } else {
-                    map.put("MerTranSerialNo", client.getData("MerTranSerialNo"));
-                    map.put("TranState", client.getData("TranState"));
-                    map.put("Amount", client.getData("Amount"));
-                    map.put("Currency", client.getData("Currency"));
-                    map.put("Bankcomment", client.getData("Bankcomment"));
-                    responseMessage = new ResponseMessage(true, "成功", 200, map);
-                }
-            }
+            Map<String, Object> responseData = this.toResponseDataWithOneKeyPay(client);
+            responseMessage = this.responseRec(client, MerCertID, TranCode, responseData);
         }
         return responseMessage;
     }
@@ -517,10 +391,7 @@ public class BocompayOneKeyController {
             responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
         } else {
             String TranCode = request.getParameter("TranCode");
-            client.setHead("TranCode", TranCode);
-            client.setHead("MerPtcId", request.getParameter("MerPtcId"));
-            client.setHead("TranDate", request.getParameter("TranDate"));
-            client.setHead("TranTime", request.getParameter("TranTime"));
+            client = this.initializeRequest(request, client);
 
             client.setData("TotalCount", request.getParameter("TotalCount"));
             client.setData("ChannelApi", request.getParameter("ChannelApi"));
@@ -591,31 +462,19 @@ public class BocompayOneKeyController {
             }
             client.setData("OrderList", forInnerInto);
 
-            String rst = client.execute(MerCertID, TranCode);
-
-            if (rst == null) {
-                responseMessage = new ResponseMessage(true, client.getLastErr(), 500, null);
-            } else {
-                Map<String, String> map = new HashMap<>();
-                map.put("RspType", client.getHead("RspType"));
-                map.put("RspCode", client.getHead("RspCode"));
-                map.put("RspMsg", client.getHead("RspMsg"));
-                map.put("RspDate", client.getHead("RspDate"));
-                map.put("RspTime", client.getHead("RspTime"));
-                if ("E".equalsIgnoreCase(client.changeNull(client.getHead("RspType")))) {
-                    responseMessage = new ResponseMessage(true, client.getHead("RspMsg"), 201, map);
-                } else {
-                    map.put("MerTranSerialNo", client.getData("MerTranSerialNo"));
-                    map.put("TranState", client.getData("TranState"));
-                    map.put("Amount", client.getData("Amount"));
-                    map.put("Currency", client.getData("Currency"));
-                    map.put("Bankcomment", client.getData("Bankcomment"));
-                    responseMessage = new ResponseMessage(true, "成功", 200, map);
-                }
-            }
+            Map<String, Object> responseData = this.toResponseDataWithOneKeyPay(client);
+            responseMessage = this.responseRec(client, MerCertID, TranCode, responseData);
         }
         return responseMessage;
     }
 
-
+    public Map<String, Object> toResponseDataWithOneKeyPay(BocomClient client) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("MerTranSerialNo", client.getData("MerTranSerialNo"));
+        map.put("TranState", client.getData("TranState"));
+        map.put("Amount", client.getData("Amount"));
+        map.put("Currency", client.getData("Currency"));
+        map.put("Bankcomment", client.getData("Bankcomment"));
+        return map;
+    }
 }

@@ -6,12 +6,6 @@ package com.spring.bocompay.domain.trade;
  * @create: 2018/4/26 16:02
  */
 public class TradeConfirmResponseMessage {
-    //head
-    private String RspType;//响应类型
-    private String RspCode;//交易返回码
-    private String RspMsg;//交易返回信息
-    private String RspDate;//响应日期
-    private String RspTime;//响应时间
     //body
     private String TranRspCode;//交易处理码
     private String TranStt;//交易状态
@@ -22,54 +16,6 @@ public class TradeConfirmResponseMessage {
     private String MerTranSerialNo;//商户流水号
 
     public TradeConfirmResponseMessage() {
-    }
-
-    public TradeConfirmResponseMessage(String rspType, String rspCode, String rspMsg, String rspDate, String rspTime) {
-        RspType = rspType;
-        RspCode = rspCode;
-        RspMsg = rspMsg;
-        RspDate = rspDate;
-        RspTime = rspTime;
-    }
-
-    public String getRspType() {
-        return RspType;
-    }
-
-    public void setRspType(String rspType) {
-        RspType = rspType;
-    }
-
-    public String getRspCode() {
-        return RspCode;
-    }
-
-    public void setRspCode(String rspCode) {
-        RspCode = rspCode;
-    }
-
-    public String getRspMsg() {
-        return RspMsg;
-    }
-
-    public void setRspMsg(String rspMsg) {
-        RspMsg = rspMsg;
-    }
-
-    public String getRspDate() {
-        return RspDate;
-    }
-
-    public void setRspDate(String rspDate) {
-        RspDate = rspDate;
-    }
-
-    public String getRspTime() {
-        return RspTime;
-    }
-
-    public void setRspTime(String rspTime) {
-        RspTime = rspTime;
     }
 
     public String getTranRspCode() {
@@ -131,12 +77,7 @@ public class TradeConfirmResponseMessage {
     @Override
     public String toString() {
         return "TradeConfirmResponseMessage{" +
-                "RspType='" + RspType + '\'' +
-                ", RspCode='" + RspCode + '\'' +
-                ", RspMsg='" + RspMsg + '\'' +
-                ", RspDate='" + RspDate + '\'' +
-                ", RspTime='" + RspTime + '\'' +
-                ", TranRspCode='" + TranRspCode + '\'' +
+                "TranRspCode='" + TranRspCode + '\'' +
                 ", TranStt='" + TranStt + '\'' +
                 ", MerOrderNo='" + MerOrderNo + '\'' +
                 ", ConfirmOrder='" + ConfirmOrder + '\'' +
@@ -146,3 +87,4 @@ public class TradeConfirmResponseMessage {
                 '}';
     }
 }
+

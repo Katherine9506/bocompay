@@ -6,7 +6,6 @@ import com.bocom.bocompay.OpList;
 import com.spring.bocompay.domain.trade.RefundDetailResponseMessage;
 import com.spring.bocompay.domain.trade.RefundTurnover;
 import com.spring.bocompay.service.BaseService;
-import com.spring.bocompay.util.ResponseMessage;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,13 +20,13 @@ import java.util.List;
 public class RefundDetailResponseMessageService extends BaseService {
 
     /**
-     * @param client       退款明细响应报文
-     * @param refundDetail 退款明细
+     * @param client 退款明细响应报文
      * @description: 填充退款明细并返回成功响应
      * @author: Katherine
      * @create: 2018/4/26 11:39
      */
-    public ResponseMessage fillRefundDetail(BocomClient client, RefundDetailResponseMessage refundDetail) {
+    public RefundDetailResponseMessage fillRefundDetail(BocomClient client) {
+        RefundDetailResponseMessage refundDetail = new RefundDetailResponseMessage();
         refundDetail.setMerPtcId(client.getData("MerPtcId"));
         refundDetail.setMerPtcName(client.getData("MerPtcName"));
         refundDetail.setOpenBra(client.getData("OpenBra"));
@@ -44,7 +43,7 @@ public class RefundDetailResponseMessageService extends BaseService {
             SettingList.add(this.prepareRefundTurnover(settingList.getOpInfo(index)));
         }
 
-        return this.success(refundDetail);
+        return refundDetail;
     }
 
     public RefundTurnover prepareRefundTurnover(OpInfo opInfo) {

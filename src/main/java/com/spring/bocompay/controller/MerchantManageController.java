@@ -26,7 +26,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping(value = "bocompay/merMag")
-public class MerchantManageController {
+public class MerchantManageController extends BaseController {
 
     @Autowired
     private MerRetNotifyUrlService merRetNotifyUrlService;
@@ -54,44 +54,17 @@ public class MerchantManageController {
             responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
         } else {
             String TranCode = request.getParameter("TranCode");
-            String MerPtcId = request.getParameter("MerPtcId");
-            String TranDate = request.getParameter("TranDate");
-            String TranTime = request.getParameter("TranTime");
+            client = this.initializeRequest(request, client);
 
-            String ReturnURL = request.getParameter("MerTranSerialNo");//前台通知地址
-            String NotifyURL = request.getParameter("SubMerPtcId");//后台通知地址
-            String AgreedReturnURL = request.getParameter("MerOrderNo");//一键支付账户签约前台通知地址
-            String AgreedNotifyURL = request.getParameter("ConfirmType");//一键支付账户签约后台通知地址
+            client.setData("ReturnURL", request.getParameter("MerTranSerialNo"));
+            client.setData("NotifyURL", request.getParameter("SubMerPtcId"));
+            client.setData("AgreedReturnURL", request.getParameter("MerOrderNo"));
+            client.setData("AgreedNotifyURL", request.getParameter("ConfirmType"));
 
-
-            client.setHead("TranCode", TranCode);
-            client.setHead("MerPtcId", MerPtcId);
-            client.setHead("TranDate", TranDate);
-            client.setHead("TranTime", TranTime);
-
-            client.setData("ReturnURL", ReturnURL);
-            client.setData("NotifyURL", NotifyURL);
-            client.setData("AgreedReturnURL", AgreedReturnURL);
-            client.setData("AgreedNotifyURL", AgreedNotifyURL);
-
-            String rst = client.execute(MerCertID, TranCode);
-            MerRetNotifyUrl merRetNotifyUrl = null;
-            if (rst == null) {
-                responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
-            } else {
-                merRetNotifyUrl = new MerRetNotifyUrl(
-                        client.changeNull(client.getHead("RspType")),
-                        client.changeNull(client.getHead("RspCode")),
-                        client.changeNull(client.getHead("RspMsg")),
-                        client.changeNull(client.getHead("RspDate")),
-                        client.changeNull(client.getHead("RspTime"))
-                );
-                if ("E".equalsIgnoreCase(merRetNotifyUrl.getRspType())) {
-                    responseMessage = new ResponseMessage(true, merRetNotifyUrl.getRspMsg(), 201, merRetNotifyUrl);
-                } else {
-                    responseMessage = merRetNotifyUrlService.fillMerRetNotifyUrl(client, merRetNotifyUrl);
-                }
-            }
+            MerRetNotifyUrl merRetNotifyUrl = merRetNotifyUrlService.fillMerRetNotifyUrl(client);
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("merRetNotifyUrl", merRetNotifyUrl);
+            responseMessage = this.responseRec(client, MerCertID, TranCode, responseData);
         }
         return responseMessage;
     }
@@ -114,33 +87,12 @@ public class MerchantManageController {
             responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
         } else {
             String TranCode = request.getParameter("TranCode");
-            String MerPtcId = request.getParameter("MerPtcId");
-            String TranDate = request.getParameter("TranDate");
-            String TranTime = request.getParameter("TranTime");
+            client = this.initializeRequest(request, client);
 
-            client.setHead("TranCode", TranCode);
-            client.setHead("MerPtcId", MerPtcId);
-            client.setHead("TranDate", TranDate);
-            client.setHead("TranTime", TranTime);
-
-            String rst = client.execute(MerCertID, TranCode);
-            MerSignDetailResponseMessage merSignDetail = null;
-            if (rst == null) {
-                responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
-            } else {
-                merSignDetail = new MerSignDetailResponseMessage(
-                        client.changeNull(client.getHead("RspType")),
-                        client.changeNull(client.getHead("RspCode")),
-                        client.changeNull(client.getHead("RspMsg")),
-                        client.changeNull(client.getHead("RspDate")),
-                        client.changeNull(client.getHead("RspTime"))
-                );
-                if ("E".equalsIgnoreCase(merSignDetail.getRspType())) {
-                    responseMessage = new ResponseMessage(true, merSignDetail.getRspMsg(), 201, merSignDetail);
-                } else {
-                    responseMessage = merSignDetailService.fillMerSignDetail(client, merSignDetail);
-                }
-            }
+            MerSignDetailResponseMessage merSignDetail = merSignDetailService.fillMerSignDetail(client);
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("merSignDetail", merSignDetail);
+            responseMessage = this.responseRec(client, MerCertID, TranCode, responseData);
         }
         return responseMessage;
     }
@@ -163,35 +115,14 @@ public class MerchantManageController {
             responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
         } else {
             String TranCode = request.getParameter("TranCode");
-            String MerPtcId = request.getParameter("MerPtcId");
-            String TranDate = request.getParameter("TranDate");
-            String TranTime = request.getParameter("TranTime");
-
-            client.setHead("TranCode", TranCode);
-            client.setHead("MerPtcId", MerPtcId);
-            client.setHead("TranDate", TranDate);
-            client.setHead("TranTime", TranTime);
+            client = this.initializeRequest(request, client);
 
             client.setData("SubMerPtcId", request.getParameter("SubMerPtcId"));
 
-            String rst = client.execute(MerCertID, TranCode);
-            SndMerSignDetailResponseMessage sndMerSignDetail = null;
-            if (rst == null) {
-                responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
-            } else {
-                sndMerSignDetail = new SndMerSignDetailResponseMessage(
-                        client.changeNull(client.getHead("RspType")),
-                        client.changeNull(client.getHead("RspCode")),
-                        client.changeNull(client.getHead("RspMsg")),
-                        client.changeNull(client.getHead("RspDate")),
-                        client.changeNull(client.getHead("RspTime"))
-                );
-                if ("E".equalsIgnoreCase(sndMerSignDetail.getRspType())) {
-                    responseMessage = new ResponseMessage(true, sndMerSignDetail.getRspMsg(), 201, sndMerSignDetail);
-                } else {
-                    responseMessage = sndMerSignDetailService.fillSndMerSignDetail(client, sndMerSignDetail);
-                }
-            }
+            SndMerSignDetailResponseMessage sndMerSignDetail = sndMerSignDetailService.fillSndMerSignDetail(client);
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("sndMerSignDetail", sndMerSignDetail);
+            responseMessage = this.responseRec(client, MerCertID, TranCode, responseData);
         }
         return responseMessage;
     }
@@ -209,10 +140,7 @@ public class MerchantManageController {
             responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
         } else {
             String TranCode = request.getParameter("TranCode");
-            client.setHead("TranCode", TranCode);
-            client.setHead("MerPtcId", request.getParameter("MerPtcId"));
-            client.setHead("TranDate", request.getParameter("TranDate"));
-            client.setHead("TranTime", request.getParameter("TranTime"));
+            client = this.initializeRequest(request, client);
 
             //开始报文体
             BocomDataMap MerBaseInfo = new BocomDataMap();
@@ -291,25 +219,10 @@ public class MerchantManageController {
             MerAccFeeInfo.setData("AccMemo", request.getParameter("AccMemo3"));
             client.setData("MerAccList.MerAccInfo", MerAccFeeInfo);
 
-            String rst = client.execute(MerCertID, TranCode);
-
-            if (rst == null) {
-                responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
-            } else {
-                Map<String, String> rtnMap = new HashMap<>();
-                rtnMap.put("RspType", client.getHead("RspType"));
-                rtnMap.put("RspCode", client.getHead("RspCode"));
-                rtnMap.put("RspMsg", client.getHead("RspMsg"));
-                rtnMap.put("RspDate", client.getHead("RspDate"));
-                rtnMap.put("RspTime", client.getHead("RspTime"));
-                if ("E".equalsIgnoreCase(client.getHead("RspType"))) {
-                    responseMessage = new ResponseMessage(true, client.getHead("RspMsg"), 201, rtnMap);
-                } else {
-                    rtnMap.put("MerPtcId", client.getData("MerPtcId"));
-                    rtnMap.put("SubMerPtcId", client.getData("SubMerPtcId"));
-                    responseMessage = new ResponseMessage(true, "成功", 200, rtnMap);
-                }
-            }
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("MerPtcId", client.getData("MerPtcId"));
+            responseData.put("SubMerPtcId", client.getData("SubMerPtcId"));
+            responseMessage = this.responseRec(client, MerCertID, TranCode, responseData);
         }
         return responseMessage;
     }

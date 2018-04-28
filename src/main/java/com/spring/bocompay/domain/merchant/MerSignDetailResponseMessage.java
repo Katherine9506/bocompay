@@ -8,12 +8,6 @@ import java.util.List;
  * @create: 2018/4/26 17:35
  */
 public class MerSignDetailResponseMessage {
-    //head
-    private String RspType;//响应类型
-    private String RspCode;//交易返回码
-    private String RspMsg;//交易返回信息
-    private String RspDate;//响应日期
-    private String RspTime;//响应时间
     //body
     private MerBaseInfo MerBaseInfo;//商户基本信息
     private MerBusInfo MerBusInfo;//商户业务信息
@@ -24,54 +18,6 @@ public class MerSignDetailResponseMessage {
     private List<MerAccInfo> MerAccList;//帐号信息列表
 
     public MerSignDetailResponseMessage() {
-    }
-
-    public MerSignDetailResponseMessage(String rspType, String rspCode, String rspMsg, String rspDate, String rspTime) {
-        RspType = rspType;
-        RspCode = rspCode;
-        RspMsg = rspMsg;
-        RspDate = rspDate;
-        RspTime = rspTime;
-    }
-
-    public String getRspType() {
-        return RspType;
-    }
-
-    public void setRspType(String rspType) {
-        RspType = rspType;
-    }
-
-    public String getRspCode() {
-        return RspCode;
-    }
-
-    public void setRspCode(String rspCode) {
-        RspCode = rspCode;
-    }
-
-    public String getRspMsg() {
-        return RspMsg;
-    }
-
-    public void setRspMsg(String rspMsg) {
-        RspMsg = rspMsg;
-    }
-
-    public String getRspDate() {
-        return RspDate;
-    }
-
-    public void setRspDate(String rspDate) {
-        RspDate = rspDate;
-    }
-
-    public String getRspTime() {
-        return RspTime;
-    }
-
-    public void setRspTime(String rspTime) {
-        RspTime = rspTime;
     }
 
     public com.spring.bocompay.domain.merchant.MerBaseInfo getMerBaseInfo() {
@@ -133,12 +79,7 @@ public class MerSignDetailResponseMessage {
     @Override
     public String toString() {
         return "MerSignDetailResponseMessage{" +
-                "RspType='" + RspType + '\'' +
-                ", RspCode='" + RspCode + '\'' +
-                ", RspMsg='" + RspMsg + '\'' +
-                ", RspDate='" + RspDate + '\'' +
-                ", RspTime='" + RspTime + '\'' +
-                ", MerBaseInfo=" + MerBaseInfo +
+                "MerBaseInfo=" + MerBaseInfo +
                 ", MerBusInfo=" + MerBusInfo +
                 ", MerPtcInfo=" + MerPtcInfo +
                 ", ExtMerIdList=" + ExtMerIdList +

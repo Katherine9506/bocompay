@@ -6,7 +6,6 @@ import com.bocom.bocompay.OpList;
 import com.spring.bocompay.domain.trade.OrderDetailResponseMessage;
 import com.spring.bocompay.domain.trade.TradeTurnover;
 import com.spring.bocompay.service.BaseService;
-import com.spring.bocompay.util.ResponseMessage;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,13 +20,13 @@ import java.util.List;
 public class OrderDetailResponseMessageService extends BaseService {
 
     /**
-     * @param client      订单明细响应报文
-     * @param orderDetail 订单明细
-     * @description: 填充订单明细并返回成功响应
+     * @param client 订单明细响应报文
+     * @description: 填充订单明细
      * @author: Katherine
      * @create: 2018/4/26 9:52
      */
-    public ResponseMessage fillOrderDetail(BocomClient client, OrderDetailResponseMessage orderDetail) {
+    public OrderDetailResponseMessage fillOrderDetail(BocomClient client) {
+        OrderDetailResponseMessage orderDetail = new OrderDetailResponseMessage();
         orderDetail.setTradeOrderNo(client.getData("TradeOrderNo"));
         orderDetail.setPayOrderNo(client.getData("PayOrderNo"));
         orderDetail.setTradeState(client.getData("TradeState"));
@@ -70,7 +69,7 @@ public class OrderDetailResponseMessageService extends BaseService {
         for (int index = 0; index < iNum; index++) {
             SettingList.add(this.prepareTradeTurnover(settingList.getOpInfo(index)));
         }
-        return this.success(orderDetail);
+        return orderDetail;
     }
 
     public TradeTurnover prepareTradeTurnover(OpInfo opInfo) {

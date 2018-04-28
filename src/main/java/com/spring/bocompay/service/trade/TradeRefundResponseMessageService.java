@@ -3,7 +3,6 @@ package com.spring.bocompay.service.trade;
 import com.bocom.bocompay.BocomClient;
 import com.spring.bocompay.domain.trade.TradeRefundResponseMessage;
 import com.spring.bocompay.service.BaseService;
-import com.spring.bocompay.util.ResponseMessage;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,7 +12,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TradeRefundResponseMessageService extends BaseService {
-    public ResponseMessage fillTradeRefund(BocomClient client, TradeRefundResponseMessage tradeRefund) {
+    public TradeRefundResponseMessage fillTradeRefund(BocomClient client) {
+        TradeRefundResponseMessage tradeRefund = new TradeRefundResponseMessage();
         tradeRefund.setTranRspCode(client.getData("TranRspCode"));
         tradeRefund.setTranRspMsg(client.getData("TranRspMsg"));
         tradeRefund.setTranStt(client.getData("TranStt"));
@@ -24,6 +24,6 @@ public class TradeRefundResponseMessageService extends BaseService {
         tradeRefund.setMerTranSerialNo(client.getData("MerTranSerialNo"));
         tradeRefund.setChannelType(client.getData("ChannelType"));
 
-        return this.success(tradeRefund);
+        return tradeRefund;
     }
 }

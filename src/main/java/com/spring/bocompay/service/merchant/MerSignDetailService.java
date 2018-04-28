@@ -5,7 +5,6 @@ import com.bocom.bocompay.OpInfo;
 import com.bocom.bocompay.OpList;
 import com.spring.bocompay.domain.merchant.*;
 import com.spring.bocompay.service.BaseService;
-import com.spring.bocompay.util.ResponseMessage;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,7 +25,8 @@ public class MerSignDetailService extends BaseService {
      * @author: Katherine
      * @create: 2018/4/26 18:34
      */
-    public ResponseMessage fillMerSignDetail(BocomClient client, MerSignDetailResponseMessage merSignDetail) {
+    public MerSignDetailResponseMessage fillMerSignDetail(BocomClient client) {
+        MerSignDetailResponseMessage merSignDetail = new MerSignDetailResponseMessage();
         Map opInfoMap = client.getOpInfoMap();
         //MerBaseInfo  商户基本信息
         merSignDetail.setMerBaseInfo(this.prepareMerBaseInfo((OpInfo) opInfoMap.get("MerBaseInfo")));
@@ -45,7 +45,7 @@ public class MerSignDetailService extends BaseService {
         //MerAccList  帐号信息列表
         merSignDetail.setMerAccList(this.prepareMerAccList((OpList) opListMap.get("MerAccList")));
 
-        return this.success(merSignDetail);
+        return merSignDetail;
     }
 
     private MerBaseInfo prepareMerBaseInfo(OpInfo merBaseInfo) {

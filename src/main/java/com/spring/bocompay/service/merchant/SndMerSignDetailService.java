@@ -5,7 +5,6 @@ import com.bocom.bocompay.OpInfo;
 import com.bocom.bocompay.OpList;
 import com.spring.bocompay.domain.merchant.*;
 import com.spring.bocompay.service.BaseService;
-import com.spring.bocompay.util.ResponseMessage;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,7 +20,8 @@ import java.util.Map;
 @Service
 public class SndMerSignDetailService extends BaseService {
 
-    public ResponseMessage fillSndMerSignDetail(BocomClient client, SndMerSignDetailResponseMessage sndMerSignDetail) {
+    public SndMerSignDetailResponseMessage fillSndMerSignDetail(BocomClient client) {
+        SndMerSignDetailResponseMessage sndMerSignDetail = new SndMerSignDetailResponseMessage();
         //MerPtcInfoNum  二级商户签约协议数量
         sndMerSignDetail.setMerPtcInfoNum(client.getData("MerPtcInfoCount"));
 
@@ -37,7 +37,7 @@ public class SndMerSignDetailService extends BaseService {
         int rebuildSize = Integer.parseInt(client.getData("RebuildSize"));//报文实际数值
         sndMerSignDetail.setMerPtcInfoList(this.prepareMerPtcInfoList(rebuildSize, client));
 
-        return this.success(sndMerSignDetail);
+        return sndMerSignDetail;
     }
 
     public Map<String, String> prepareParentMerBaseInfo(OpInfo opInfo) {

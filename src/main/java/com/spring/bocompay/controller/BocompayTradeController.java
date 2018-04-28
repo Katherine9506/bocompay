@@ -16,6 +16,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @description: 交易类接口
@@ -24,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("bocompay/trade")
-public class BocompayTradeController {
+public class BocompayTradeController extends BaseController {
 
     @Autowired
     private TransactionMessageService transactionMessageService;
@@ -127,42 +129,21 @@ public class BocompayTradeController {
             responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
         } else {
             String TranCode = request.getParameter("TranCode");
-            String MerPtcId = request.getParameter("MerPtcId");
-            String TranDate = request.getParameter("TranDate");
-            String TranTime = request.getParameter("TranTime");
-            String MerOrderNo = request.getParameter("MerOrderNo");
+            client = this.initializeRequest(request, client);
 
-            client.setHead("TranCode", TranCode);
-            client.setHead("MerPtcId", MerPtcId);
-            client.setHead("TranDate", TranDate);
-            client.setHead("TranTime", TranTime);
+            client.setData("MerOrderNo", request.getParameter("MerOrderNo"));
 
-            client.setData("MerOrderNo", MerOrderNo);
-            String rst = client.execute(MerCertID, TranCode);
-            OrderDetailResponseMessage orderDetail = null;
-            if (rst == null) {
-                responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
-            } else {
-                orderDetail = new OrderDetailResponseMessage(
-                        client.changeNull(client.getHead("RspType")),
-                        client.changeNull(client.getHead("RspCode")),
-                        client.changeNull(client.getHead("RspMsg")),
-                        client.changeNull(client.getHead("RspDate")),
-                        client.changeNull(client.getHead("RspTime"))
-                );
-                if ("E".equalsIgnoreCase(orderDetail.getRspType())) {
-                    responseMessage = new ResponseMessage(true, orderDetail.getRspMsg(), 201, orderDetail);
-                } else {
-                    responseMessage = orderDetailService.fillOrderDetail(client, orderDetail);
-                }
-            }
+            OrderDetailResponseMessage orderDetail = orderDetailService.fillOrderDetail(client);
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("orderDetail", orderDetail);
+            responseMessage = this.responseRec(client, MerCertID, TranCode, responseData);
         }
         return responseMessage;
     }
 
     /**
      * @param
-     * @description: 退款明细查询< BPAYPY4197>
+     * @description: 退款明细查询<BPAYPY4197>
      * @author: Katherine
      * @create: 2018/4/26 10:03
      */
@@ -179,50 +160,24 @@ public class BocompayTradeController {
             responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
         } else {
             String TranCode = request.getParameter("TranCode");
-            String MerPtcId = request.getParameter("MerPtcId");
-            String TranDate = request.getParameter("TranDate");
-            String TranTime = request.getParameter("TranTime");
+            client = this.initializeRequest(request, client);
 
-            String MerOrderNo = request.getParameter("MerOrderNo");
-            String MerTranSerialNo = request.getParameter("MerTranSerialNo");
-            String StartDate = request.getParameter("StartDate");
-            String EndDate = request.getParameter("EndDate");
+            client.setData("MerOrderNo", request.getParameter("MerOrderNo"));
+            client.setData("MerTranSerialNo", request.getParameter("MerTranSerialNo"));
+            client.setData("StartDate", request.getParameter("StartDate"));
+            client.setData("EndDate", request.getParameter("EndDate"));
 
-            client.setHead("TranCode", TranCode);
-            client.setHead("MerPtcId", MerPtcId);
-            client.setHead("TranDate", TranDate);
-            client.setHead("TranTime", TranTime);
-
-            client.setData("MerOrderNo", MerOrderNo);
-            client.setData("MerTranSerialNo", MerTranSerialNo);
-            client.setData("StartDate", StartDate);
-            client.setData("EndDate", EndDate);
-
-            String rst = client.execute(MerCertID, TranCode);
-            RefundDetailResponseMessage refundDetail = null;
-            if (rst == null) {
-                responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
-            } else {
-                refundDetail = new RefundDetailResponseMessage(
-                        client.changeNull(client.getHead("RspType")),
-                        client.changeNull(client.getHead("RspCode")),
-                        client.changeNull(client.getHead("RspMsg")),
-                        client.changeNull(client.getHead("RspDate")),
-                        client.changeNull(client.getHead("RspTime"))
-                );
-                if ("E".equalsIgnoreCase(refundDetail.getRspType())) {
-                    responseMessage = new ResponseMessage(true, refundDetail.getRspMsg(), 201, refundDetail);
-                } else {
-                    responseMessage = refundDetailService.fillRefundDetail(client, refundDetail);
-                }
-            }
+            RefundDetailResponseMessage refundDetail = refundDetailService.fillRefundDetail(client);
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("refundDetail", refundDetail);
+            responseMessage = this.responseRec(client, MerCertID, TranCode, responseData);
         }
         return responseMessage;
     }
 
     /**
      * @param
-     * @description: 订单退款< BPAYPY4107>
+     * @description: 订单退款<BPAYPY4107>
      * @author: Katherine
      * @create: 2018/4/26 15:29
      */
@@ -239,56 +194,28 @@ public class BocompayTradeController {
             responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
         } else {
             String TranCode = request.getParameter("TranCode");
-            String MerPtcId = request.getParameter("MerPtcId");
-            String TranDate = request.getParameter("TranDate");
-            String TranTime = request.getParameter("TranTime");
+            client = this.initializeRequest(request, client);
 
-            String MerTranSerialNo = request.getParameter("MerTranSerialNo");//商户流水号
-            String MerOrderNo = request.getParameter("MerOrderNo");//平台商户（外部）订单号
-            String RefundAmt = request.getParameter("RefundAmt");//退款金额
-            String RefundCry = request.getParameter("RefundCry");//退款币种
-            String CombineNo = request.getParameter("CombineNo");//并单编号
-            String RefundMemo = request.getParameter("RefundMemo");//退款备注
-
-            client.setHead("TranCode", TranCode);
-            client.setHead("MerPtcId", MerPtcId);
-            client.setHead("TranDate", TranDate);
-            client.setHead("TranTime", TranTime);
-
-            client.setData("MerTranSerialNo", MerTranSerialNo);
+            client.setData("MerTranSerialNo", request.getParameter("MerTranSerialNo"));
             BocomDataMap busiInfo = new BocomDataMap();//业务信息
-            busiInfo.setData("MerOrderNo", MerOrderNo);
-            busiInfo.setData("RefundAmt", RefundAmt);
-            busiInfo.setData("RefundCry", RefundCry);
-            busiInfo.setData("CombineNo", CombineNo);
-            busiInfo.setData("RefundMemo", RefundMemo);
+            busiInfo.setData("MerOrderNo", request.getParameter("MerOrderNo"));
+            busiInfo.setData("RefundAmt", request.getParameter("RefundAmt"));
+            busiInfo.setData("RefundCry", request.getParameter("RefundCry"));
+            busiInfo.setData("CombineNo", request.getParameter("CombineNo"));
+            busiInfo.setData("RefundMemo", request.getParameter("RefundMemo"));
             client.setData("BusiInfo", busiInfo.toString());
 
-            String rst = client.execute(MerCertID, TranCode);
-            TradeRefundResponseMessage tradeRefund = null;
-            if (rst == null) {
-                responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
-            } else {
-                tradeRefund = new TradeRefundResponseMessage(
-                        client.changeNull(client.getHead("RspType")),
-                        client.changeNull(client.getHead("RspCode")),
-                        client.changeNull(client.getHead("RspMsg")),
-                        client.changeNull(client.getHead("RspDate")),
-                        client.changeNull(client.getHead("RspTime"))
-                );
-                if ("E".equalsIgnoreCase(tradeRefund.getRspType())) {
-                    responseMessage = new ResponseMessage(true, tradeRefund.getRspMsg(), 201, tradeRefund);
-                } else {
-                    responseMessage = tradeRefundService.fillTradeRefund(client, tradeRefund);
-                }
-            }
+            TradeRefundResponseMessage tradeRefund = tradeRefundService.fillTradeRefund(client);
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("tradeRefund", tradeRefund);
+            responseMessage = this.responseRec(client, MerCertID, TranCode, responseData);
         }
         return responseMessage;
     }
 
     /**
      * @param
-     * @description: 订单交付< BPAYPY4106>
+     * @description: 订单交付<BPAYPY4106>
      * @author: Katherine
      * @create: 2018/4/26 15:52
      */
@@ -305,56 +232,24 @@ public class BocompayTradeController {
             responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
         } else {
             String TranCode = request.getParameter("TranCode");
-            String MerPtcId = request.getParameter("MerPtcId");
-            String TranDate = request.getParameter("TranDate");
-            String TranTime = request.getParameter("TranTime");
+            client = this.initializeRequest(request, client);
 
-            String MerTranSerialNo = request.getParameter("MerTranSerialNo");//商户流水号
-            String SubMerPtcId = request.getParameter("SubMerPtcId");//二级商户协议号
-            String MerOrderNo = request.getParameter("MerOrderNo");//一级商户（外部）订单号
-            String ConfirmType = request.getParameter("ConfirmType");//交付类型
-            String ConfirmAmt = request.getParameter("ConfirmAmt");//交付金额
-            String ConfirmCry = request.getParameter("ConfirmCry");//交付币种
-            String MerProfitAmt = request.getParameter("MerProfitAmt");//一级商户分润金额
-            String MerProfitCry = request.getParameter("MerProfitCry");//一级商户分润币种
-            String ConfirmMemo = request.getParameter("ConfirmMemo");//交付备注
-
-
-            client.setHead("TranCode", TranCode);
-            client.setHead("MerPtcId", MerPtcId);
-            client.setHead("TranDate", TranDate);
-            client.setHead("TranTime", TranTime);
-
-            client.setData("MerTranSerialNo", MerTranSerialNo);
-            client.setData("SubMerPtcId", SubMerPtcId);
+            client.setData("MerTranSerialNo", request.getParameter("MerTranSerialNo"));
+            client.setData("SubMerPtcId", request.getParameter("SubMerPtcId"));
             BocomDataMap busiInfo = new BocomDataMap();//业务信息
-            busiInfo.setData("MerOrderNo", MerOrderNo);
-            busiInfo.setData("ConfirmType", ConfirmType);
-            busiInfo.setData("ConfirmAmt", ConfirmAmt);
-            busiInfo.setData("ConfirmCry", ConfirmCry);
-            busiInfo.setData("MerProfitAmt", MerProfitAmt);
-            busiInfo.setData("MerProfitCry", MerProfitCry);
-            busiInfo.setData("ConfirmMemo", ConfirmMemo);
+            busiInfo.setData("MerOrderNo", request.getParameter("MerOrderNo"));
+            busiInfo.setData("ConfirmType", request.getParameter("ConfirmType"));
+            busiInfo.setData("ConfirmAmt", request.getParameter("ConfirmAmt"));
+            busiInfo.setData("ConfirmCry", request.getParameter("ConfirmCry"));
+            busiInfo.setData("MerProfitAmt", request.getParameter("MerProfitAmt"));
+            busiInfo.setData("MerProfitCry", request.getParameter("MerProfitCry"));
+            busiInfo.setData("ConfirmMemo", request.getParameter("ConfirmMemo"));
             client.setData("BusiInfo", busiInfo.toString());
 
-            String rst = client.execute(MerCertID, TranCode);
-            TradeConfirmResponseMessage tradeConfim = null;
-            if (rst == null) {
-                responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);
-            } else {
-                tradeConfim = new TradeConfirmResponseMessage(
-                        client.changeNull(client.getHead("RspType")),
-                        client.changeNull(client.getHead("RspCode")),
-                        client.changeNull(client.getHead("RspMsg")),
-                        client.changeNull(client.getHead("RspDate")),
-                        client.changeNull(client.getHead("RspTime"))
-                );
-                if ("E".equalsIgnoreCase(tradeConfim.getRspType())) {
-                    responseMessage = new ResponseMessage(true, tradeConfim.getRspMsg(), 201, tradeConfim);
-                } else {
-                    responseMessage = tradeConfirmService.fillTradeConfirm(client, tradeConfim);
-                }
-            }
+            TradeConfirmResponseMessage tradeConfim = tradeConfirmService.fillTradeConfirm(client);
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("tradeConfim", tradeConfim);
+            responseMessage = this.responseRec(client, MerCertID, TranCode, responseData);
         }
         return responseMessage;
     }

@@ -77,8 +77,9 @@ public class BocompayOneKeyController extends BaseController {
             client = this.initializeRequest(request, client);
             client.setData("MerAgreeNo", request.getParameter("MerAgreeNo"));
 
-            Map<String, Object> responseData = this.toResponseDataWithOneKeyPay(client);
-            responseMessage = this.responseRecWithTranType(client, MerCertID, TranCode, "ONEKEY", responseData);
+            String rst = client.execute(MerCertID, TranCode, "ONEKEY");
+
+            responseMessage = this.responseRecWithTranType(client, rst, MerCertID, TranCode, "ONEKEY", this.toResponseDataWithOneKeyPay(client));
         }
         return responseMessage;
     }
@@ -105,7 +106,9 @@ public class BocompayOneKeyController extends BaseController {
 
             client.setData("AgreeNo", request.getParameter("AgreeNo"));
 
-            responseMessage = this.responseRecWithTranType(client, MerCertID, TranCode, "ONEKEY", null);
+            String rst = client.execute(MerCertID, TranCode, "ONEKEY");
+
+            responseMessage = this.responseRecWithTranType(client, rst, MerCertID, TranCode, "ONEKEY", null);
         }
         return responseMessage;
     }
@@ -133,10 +136,12 @@ public class BocompayOneKeyController extends BaseController {
             client.setData("Amount", request.getParameter("Amount"));
             client.setData("ApplyTime", request.getParameter("ApplyTime"));
 
+            String rst = client.execute(MerCertID, TranCode, "ONEKEY");
+
             Map<String, Object> responseData = new HashMap<>();
             responseData.put("SessionID", client.getData("SessionID"));
             responseData.put("Mobile", client.getData("Mobile"));
-            responseMessage = this.responseRecWithTranType(client, MerCertID, TranCode, "ONEKEY", responseData);
+            responseMessage = this.responseRecWithTranType(client, rst, MerCertID, TranCode, "ONEKEY", responseData);
         }
         return responseMessage;
     }
@@ -203,8 +208,9 @@ public class BocompayOneKeyController extends BaseController {
             MemoInfo.setData("PayMemo", request.getParameter("PayMemo"));
             client.setData("MemoInfo", MemoInfo.toString());
 
-            Map<String, Object> responseData = this.toResponseDataWithOneKeyPay(client);
-            responseMessage = this.responseRec(client, MerCertID, TranCode, responseData);
+            String rst = client.execute(MerCertID, TranCode);
+
+            responseMessage = this.responseRec(client, rst, MerCertID, TranCode, this.toResponseDataWithOneKeyPay(client));
         }
         return responseMessage;
     }
@@ -295,8 +301,9 @@ public class BocompayOneKeyController extends BaseController {
             }
             client.setData("OrderList", forInnerInto);
 
-            Map<String, Object> responseData = this.toResponseDataWithOneKeyPay(client);
-            responseMessage = this.responseRec(client, MerCertID, TranCode, responseData);
+            String rst = client.execute(MerCertID, TranCode);
+
+            responseMessage = this.responseRec(client, rst, MerCertID, TranCode, this.toResponseDataWithOneKeyPay(client));
         }
         return responseMessage;
     }
@@ -369,8 +376,9 @@ public class BocompayOneKeyController extends BaseController {
             map7.setData("PayMemo", request.getParameter("PayMemo"));
             client.setData("MemoInfo", map7.toString());
 
-            Map<String, Object> responseData = this.toResponseDataWithOneKeyPay(client);
-            responseMessage = this.responseRec(client, MerCertID, TranCode, responseData);
+            String rst = client.execute(MerCertID, TranCode);
+
+            responseMessage = this.responseRec(client, rst, MerCertID, TranCode, this.toResponseDataWithOneKeyPay(client));
         }
         return responseMessage;
     }
@@ -462,8 +470,9 @@ public class BocompayOneKeyController extends BaseController {
             }
             client.setData("OrderList", forInnerInto);
 
-            Map<String, Object> responseData = this.toResponseDataWithOneKeyPay(client);
-            responseMessage = this.responseRec(client, MerCertID, TranCode, responseData);
+            String rst = client.execute(MerCertID, TranCode);
+
+            responseMessage = this.responseRec(client, rst, MerCertID, TranCode, this.toResponseDataWithOneKeyPay(client));
         }
         return responseMessage;
     }

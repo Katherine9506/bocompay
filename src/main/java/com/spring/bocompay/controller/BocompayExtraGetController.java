@@ -29,4 +29,9 @@ public class BocompayExtraGetController {
     public ModelAndView sndMerSignAdd() {
         return new ModelAndView("bocompayExtra/sndMerSignAdd");
     }
+
+    @GetMapping("pay0_singlePreOrderCreateAndPay")
+    public ModelAndView pay0_singlePreOrderCreateAndPay() {
+        return new ModelAndView("bocompayExtra/pay0_singlePreOrderCreateAndPay");
+    }
 }

@@ -32,9 +32,9 @@ public class BaseController {
         return client;
     }
 
-    public ResponseMessage responseRecWithTranType(BocomClient client, String MerCertID, String TranCode, String TranType, Map<String, Object> responseData) {
+    public ResponseMessage responseRecWithTranType(BocomClient client, String rst, String MerCertID, String TranCode, String TranType, Map<String, Object> responseData) {
         ResponseMessage responseMessage = null;
-        String rst = client.execute(MerCertID, TranCode, TranType);
+//        String rst = client.execute(MerCertID, TranCode, TranType);
         if (rst == null) {
             responseMessage = new ResponseMessage(true, client.getLastErr(), 500, null);
         } else {
@@ -49,8 +49,8 @@ public class BaseController {
         return responseMessage;
     }
 
-    public ResponseMessage responseRec(BocomClient client, String MerCertID, String TranCode, Map<String, Object> responseData) {
-        return this.responseRecWithTranType(client, MerCertID, TranCode, null, responseData);
+    public ResponseMessage responseRec(BocomClient client, String rst, String MerCertID, String TranCode, Map<String, Object> responseData) {
+        return this.responseRecWithTranType(client, rst, MerCertID, TranCode, null, responseData);
     }
 
 }

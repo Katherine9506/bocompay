@@ -48,4 +48,14 @@ public class BocompayGetController {
     public ModelAndView onekeyIndex() {
         return new ModelAndView("/bocompayOnekey/onekeyIndex");
     }
+
+    @GetMapping("downloadBill")
+    public ModelAndView downloadBill() {
+        return new ModelAndView("/bocompay/downloadBill");
+    }
+
+    @GetMapping("downloadReport")
+    public ModelAndView downloadReport() {
+        return new ModelAndView("/bocompay/downloadReport");
+    }
 }

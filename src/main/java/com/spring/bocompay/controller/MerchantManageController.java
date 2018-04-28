@@ -5,6 +5,7 @@ import com.bocom.bocompay.BocomDataMap;
 import com.spring.bocompay.domain.merchant.MerRetNotifyUrl;
 import com.spring.bocompay.domain.merchant.MerSignDetailResponseMessage;
 import com.spring.bocompay.domain.merchant.SndMerSignDetailResponseMessage;
+import com.spring.bocompay.domain.util.Response;
 import com.spring.bocompay.service.merchant.MerRetNotifyUrlService;
 import com.spring.bocompay.service.merchant.MerSignDetailService;
 import com.spring.bocompay.service.merchant.SndMerSignDetailService;
@@ -61,10 +62,20 @@ public class MerchantManageController extends BaseController {
             client.setData("AgreedReturnURL", request.getParameter("MerOrderNo"));
             client.setData("AgreedNotifyURL", request.getParameter("ConfirmType"));
 
-            MerRetNotifyUrl merRetNotifyUrl = merRetNotifyUrlService.fillMerRetNotifyUrl(client);
-            Map<String, Object> responseData = new HashMap<>();
-            responseData.put("merRetNotifyUrl", merRetNotifyUrl);
-            responseMessage = this.responseRec(client, MerCertID, TranCode, responseData);
+            String rst = client.execute(MerCertID, TranCode);
+
+            if (rst == null) {
+                responseMessage = new ResponseMessage(true, client.getLastErr(), 500, null);
+            } else {
+                Response response = this.initializeResponse(client);
+                if ("E".equalsIgnoreCase(client.getHead("RspType"))) {
+                    responseMessage = new ResponseMessage(true, client.getHead("RspMsg"), 201, response);
+                } else {
+                    MerRetNotifyUrl merRetNotifyUrl = merRetNotifyUrlService.fillMerRetNotifyUrl(client);
+                    response.getData().put("merRetNotifyUrl", merRetNotifyUrl);
+                    responseMessage = new ResponseMessage(true, "成功", 200, response);
+                }
+            }
         }
         return responseMessage;
     }
@@ -89,10 +100,20 @@ public class MerchantManageController extends BaseController {
             String TranCode = request.getParameter("TranCode");
             client = this.initializeRequest(request, client);
 
-            MerSignDetailResponseMessage merSignDetail = merSignDetailService.fillMerSignDetail(client);
-            Map<String, Object> responseData = new HashMap<>();
-            responseData.put("merSignDetail", merSignDetail);
-            responseMessage = this.responseRec(client, MerCertID, TranCode, responseData);
+            String rst = client.execute(MerCertID, TranCode);
+
+            if (rst == null) {
+                responseMessage = new ResponseMessage(true, client.getLastErr(), 500, null);
+            } else {
+                Response response = this.initializeResponse(client);
+                if ("E".equalsIgnoreCase(client.getHead("RspType"))) {
+                    responseMessage = new ResponseMessage(true, client.getHead("RspMsg"), 201, response);
+                } else {
+                    MerSignDetailResponseMessage merSignDetail = merSignDetailService.fillMerSignDetail(client);
+                    response.getData().put("merSignDetail", merSignDetail);
+                    responseMessage = new ResponseMessage(true, "成功", 200, response);
+                }
+            }
         }
         return responseMessage;
     }
@@ -119,10 +140,20 @@ public class MerchantManageController extends BaseController {
 
             client.setData("SubMerPtcId", request.getParameter("SubMerPtcId"));
 
-            SndMerSignDetailResponseMessage sndMerSignDetail = sndMerSignDetailService.fillSndMerSignDetail(client);
-            Map<String, Object> responseData = new HashMap<>();
-            responseData.put("sndMerSignDetail", sndMerSignDetail);
-            responseMessage = this.responseRec(client, MerCertID, TranCode, responseData);
+            String rst = client.execute(MerCertID, TranCode);
+
+            if (rst == null) {
+                responseMessage = new ResponseMessage(true, client.getLastErr(), 500, null);
+            } else {
+                Response response = this.initializeResponse(client);
+                if ("E".equalsIgnoreCase(client.getHead("RspType"))) {
+                    responseMessage = new ResponseMessage(true, client.getHead("RspMsg"), 201, response);
+                } else {
+                    SndMerSignDetailResponseMessage sndMerSignDetail = sndMerSignDetailService.fillSndMerSignDetail(client);
+                    response.getData().put("sndMerSignDetail", sndMerSignDetail);
+                    responseMessage = new ResponseMessage(true, "成功", 200, response);
+                }
+            }
         }
         return responseMessage;
     }
@@ -219,10 +250,12 @@ public class MerchantManageController extends BaseController {
             MerAccFeeInfo.setData("AccMemo", request.getParameter("AccMemo3"));
             client.setData("MerAccList.MerAccInfo", MerAccFeeInfo);
 
+            String rst = client.execute(MerCertID, TranCode);
+
             Map<String, Object> responseData = new HashMap<>();
             responseData.put("MerPtcId", client.getData("MerPtcId"));
             responseData.put("SubMerPtcId", client.getData("SubMerPtcId"));
-            responseMessage = this.responseRec(client, MerCertID, TranCode, responseData);
+            responseMessage = this.responseRec(client, rst, MerCertID, TranCode, responseData);
         }
         return responseMessage;
     }

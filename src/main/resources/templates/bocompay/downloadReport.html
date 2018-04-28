@@ -1,135 +1,147 @@
 <html>
-    <head>
-        <meta http-equiv = "Content-Type" content = "text/html; charset=UTF-8">
-        <title>报表文件下载(BPAYPY4282)</title>
-<script language = "javascript">
-	function createOrderInfo(){
-		var tmpDate = new Date();
-		var day = tmpDate.getDate();
-		var month= tmpDate.getMonth() + 1 ;
-		var year= tmpDate.getFullYear();
-    	var hours = tmpDate.getHours();
-    	var minutes = tmpDate.getMinutes();
-    	var seconds = tmpDate.getSeconds();
-    	
-    	month = ((month < 10) ? "0" : "") + month;
-    	day = ((day < 10) ? "0" : "") + day;
-    	hours = ((hours < 10) ? "0" : "") + hours;
-    	minutes = ((minutes < 10) ? "0" : "") + minutes;
-    	seconds = ((seconds < 10) ? "0" : "") + seconds;
-    	
-    	document.all.TranDate.value = year + month + day;
-    	document.all.TranTime.value = hours + minutes + seconds;
-		
-	}
-</script>
-    </head>
-    <body bgcolor = "#FFFFFF" text = "#000000">
-        <form name = "form1" method = "post" action = "downloadReport.jsp">
-            <p>
-                <input type = "hidden" name = "merCert" value = ""> 报表文件下载(BPAYPY4282)
-            </p>
-			
-			<hr/>
-            <p>
-            	<font color="blue">商户证书ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>
-            	<input type = "text" style="border-color:blue" name = "MerCertID" value = "301140880629503" >
-			</p>
-			<hr/>
-			
-            <table width = "75%" border = "0" cellpadding = "0" cellspacing = "0">
-                <tr>
-                    <td width = "23%">
-                        交易码
-                    </td>
-                    <td width = "77%">
-                        <input type = "text" name = "TranCode" value = "BPAYPY4282">
-                        <input type = "submit" id = "Submit" value = "提交" name = "submit">
-                    </td>
-                </tr>
-              <tr>
-                    <td width = "23%">
-                        一级商户协议号*
-                    </td>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>报表文件下载(BPAYPY4282)</title>
+    <script language="javascript">
+        function createOrderInfo() {
+            var tmpDate = new Date();
+            var day = tmpDate.getDate();
+            var month = tmpDate.getMonth() + 1;
+            var year = tmpDate.getFullYear();
+            var hours = tmpDate.getHours();
+            var minutes = tmpDate.getMinutes();
+            var seconds = tmpDate.getSeconds();
 
-                    <td width = "77%">
-                        <input type = "text" name = "MerPtcId" value = "1BPAY1307220047"> 
-                    </td>
-                </tr>
+            month = ((month < 10) ? "0" : "") + month;
+            day = ((day < 10) ? "0" : "") + day;
+            hours = ((hours < 10) ? "0" : "") + hours;
+            minutes = ((minutes < 10) ? "0" : "") + minutes;
+            seconds = ((seconds < 10) ? "0" : "") + seconds;
 
-                <tr>
-                    <td width = "23%">
-                        请求日期*
-                    </td>
+            document.all.TranDate.value = year + month + day;
+            document.all.TranTime.value = hours + minutes + seconds;
 
-                    <td width = "77%">
-                        <input type = "text" name = "TranDate" value = ""> yyyyMMdd
-                        <input type = "button" name = "createOrderId" value = "生成时间" onClick = "javascript:createOrderInfo();" >
-                        
-                    </td>
-                </tr>
+        }
+    </script>
+</head>
+<body bgcolor="#FFFFFF" text="#000000">
+<form name="form1" method="post" action="/bocompay/download/report">
+    <p>
+        <input type="hidden" name="merCert" value=""> 报表文件下载(BPAYPY4282)
+    </p>
 
-                <tr>
-                    <td width = "23%">
-                        请求时间*
-                    </td>
+    <hr/>
+    <p>
+        <font color="blue">商户证书ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>
+        <input type="text" style="border-color:blue" name="MerCertID" value="301140880629503">
+    </p>
+    <hr/>
 
-                    <td width = "77%">
-                        <input type = "text" name = "TranTime" value = ""> HHmmss
-                    </td>
-                </tr>
-                <tr><td width = "23%"></td><td width = "77%">&nbsp;</td></tr>
-                <tr>
-                    <td width = "23%">
-                        二级商户协议号
-                    </td>
+    <table width="75%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td width="23%">
+                交易码
+            </td>
+            <td width="77%">
+                <input type="text" name="TranCode" value="BPAYPY4282">
+                <input type="submit" id="Submit" value="提交" name="submit">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%">
+                一级商户协议号*
+            </td>
 
-                    <td width = "77%">
-                        <input type = "text" name = "SubMerPtcId" value = ""> 
-                    </td>
-                </tr>
-                <tr><td width = "23%"></td><td width = "77%">&nbsp;</td></tr>
-				<tr>
-                    <td width = "23%">
-                        文件类型*<br/>
-                        &nbsp;&nbsp;&nbsp;&nbsp;大小写及长度须完全匹配<br/>
-                    	&nbsp;&nbsp;&nbsp;&nbsp;MerchantSettleReport<br/>
-                    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-商户结算报表文件<br/>
-						&nbsp;&nbsp;&nbsp;&nbsp;MerchantFeeSettleReport<br/>
-                    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-手续费结算报表文件<br/>
-                    </td>
+            <td width="77%">
+                <input type="text" name="MerPtcId" value="1BPAY1307220047">
+            </td>
+        </tr>
 
-                    <td width = "77%" valign = "top">
-                        <input type = "text" name = "FileType" value = "MerchantSettleReport"> 
-                    </td>
-                </tr>
-                <tr><td width = "23%"></td><td width = "77%">&nbsp;</td></tr>
-                <tr>
-                    <td width = "23%">
-                        文件格式*<br/>
-						&nbsp;&nbsp;&nbsp;&nbsp;目前只支持txt格式下载<br/>
-                    	&nbsp;&nbsp;&nbsp;&nbsp;大小写及长度须完全匹配<br/>
-                    </td>
+        <tr>
+            <td width="23%">
+                请求日期*
+            </td>
 
-                    <td width = "77%" valign="top">
-                        <input type = "text" name = "FileFormat" value = "txt"> 
-                    </td>
-                </tr>
-                <tr><td width = "23%"></td><td width = "77%">&nbsp;</td></tr>
-                <tr>
-                    <td width = "23%">
-                        结算日期*
-                    </td>
+            <td width="77%">
+                <input type="text" name="TranDate" value=""> yyyyMMdd
+                <input type="button" name="createOrderId" value="生成时间" onClick="javascript:createOrderInfo();">
 
-                    <td width = "77%">
-                        <input type = "text" name = "SettDate" value = "20140212"> 
-                    </td>
-                </tr>              
-            </table>
+            </td>
+        </tr>
 
-            <p>
-                &nbsp;
-            </p>
-        </form>
-    </body>
+        <tr>
+            <td width="23%">
+                请求时间*
+            </td>
+
+            <td width="77%">
+                <input type="text" name="TranTime" value=""> HHmmss
+            </td>
+        </tr>
+        <tr>
+            <td width="23%"></td>
+            <td width="77%">&nbsp;</td>
+        </tr>
+        <tr>
+            <td width="23%">
+                二级商户协议号
+            </td>
+
+            <td width="77%">
+                <input type="text" name="SubMerPtcId" value="">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%"></td>
+            <td width="77%">&nbsp;</td>
+        </tr>
+        <tr>
+            <td width="23%">
+                文件类型*<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;大小写及长度须完全匹配<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;MerchantSettleReport<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-商户结算报表文件<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;MerchantFeeSettleReport<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-手续费结算报表文件<br/>
+            </td>
+
+            <td width="77%" valign="top">
+                <input type="text" name="FileType" value="MerchantSettleReport">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%"></td>
+            <td width="77%">&nbsp;</td>
+        </tr>
+        <tr>
+            <td width="23%">
+                文件格式*<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;目前只支持txt格式下载<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;大小写及长度须完全匹配<br/>
+            </td>
+
+            <td width="77%" valign="top">
+                <input type="text" name="FileFormat" value="txt">
+            </td>
+        </tr>
+        <tr>
+            <td width="23%"></td>
+            <td width="77%">&nbsp;</td>
+        </tr>
+        <tr>
+            <td width="23%">
+                结算日期*
+            </td>
+
+            <td width="77%">
+                <input type="text" name="SettDate" value="20140212">
+            </td>
+        </tr>
+    </table>
+
+    <p>
+        &nbsp;
+    </p>
+</form>
+</body>
 </html>

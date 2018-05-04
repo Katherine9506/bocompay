@@ -32,7 +32,7 @@ public class BocompayDownloadController extends BaseController {
         String xmlConfigPath = ClassUtils.getDefaultClassLoader().getResource("").getPath() + "static\\ini\\BocompayMerchant.xml";
         BocomClient client = new BocomClient();
 
-        int ret = client.initialize(xmlConfigPath); //
+        int ret = client.initialize(xmlConfigPath);
 
         if (ret != 0) {                                                                 //
             responseMessage = new ResponseMessage(false, client.getLastErr(), 500, null);

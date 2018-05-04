@@ -1,6 +1,11 @@
 spring:
   profiles:
-    active: dev
+    active: prod,dev
+
 
 #测试商户证书ID
 MerCertID: 301140880629503
+
+
+
+

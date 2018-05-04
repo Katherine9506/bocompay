@@ -171,11 +171,15 @@ public class BocompayTradeController extends BaseController {
         return client;
     }
 
+    /**
+     * @description: 商户订单后台通知<MAPIPY4196>
+     * @author: Katherine
+     * @create: 2018/5/2 9:00
+     */
     @PostMapping(value = "receiveBackNotify")
     public String receiveBackNotify(HttpServletRequest request) {
         String MerCertID = "301310063009501";
-        String webDeployPath = System.getProperty("bocompay.webapp");
-        String xmlConfigPath = webDeployPath + "WEB-INF\\classes\\ini\\BocompayMerchant.xml";
+        String xmlConfigPath = ClassUtils.getDefaultClassLoader().getResource("").getPath() + "static\\ini\\BocompayMerchant.xml";
         BocomClient client = new BocomClient();
 
         int ret = client.initialize(xmlConfigPath);
@@ -188,10 +192,6 @@ public class BocompayTradeController extends BaseController {
                 String err = client.getLastErr();
                 System.out.println("交易错误信息：" + err);
             } else {
-                String status = client.changeNull(client.getData("TradeState"));
-                if (status != "" && status == "Paied") {
-                    //商户端返回给银行端的响应参数
-                }
             }
         }
         return null;

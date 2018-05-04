@@ -1,7 +1,9 @@
-<%@ page import = "com.bocom.bocompay.*"%>
-<%@ page import = "java.text.SimpleDateFormat"%>
-<%@ page import = "java.util.Calendar"%>
-<%@ page import = "java.io.File"%>
+<%@ page import="com.bocom.bocompay.BocomClient" %>
+<%@ page import="com.bocom.bocompay.BocompayNetSignServer" %>
+<%@ page import="com.bocom.bocompay.BocompaySetting" %>
+<%@ page import="java.io.File" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.Calendar" %>
 <%@ page language = "java" contentType = "text/html; charset=UTF-8"%>
 
 <%
@@ -61,7 +63,7 @@
 		if (signServer.getLastErrnum() < 0) {
             out.print("ERROR:商户端签名失败");
             return;
-        }	
+        }
 		String signData = new String(bSignData, "UTF-8");//密文
 		out.print(signData);
 %>

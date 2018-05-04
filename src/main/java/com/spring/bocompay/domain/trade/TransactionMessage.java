@@ -22,7 +22,6 @@ public class TransactionMessage {
 
     private String MerTranSerialNo;//商户交易流水号
     private String SafeReserved;//安全域
-
     private BocomDataMap BusiInfo = new BocomDataMap();//业务信息
     private String MerOrderNo;//平台商户（外部）订单号
 
